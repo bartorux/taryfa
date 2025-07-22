@@ -353,6 +353,129 @@
             font-weight: bold;
         }
         
+        /* Styles dla sekcji zaawansowanej */
+        .profile-editor {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        .day-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .day-tab {
+            padding: 8px 12px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+        
+        .day-tab:hover {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+        
+        .day-tab.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .profile-controls {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+        
+        .profile-presets h4 {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .preset-buttons button {
+            padding: 8px 12px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+        
+        .preset-buttons button:hover {
+            border-color: #3498db;
+            background: #f0f8ff;
+        }
+        
+        .hourly-editor h4 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .hour-sliders {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .hour-slider {
+            text-align: center;
+        }
+        
+        .hour-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .hour-input {
+            width: 100%;
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        
+        .editor-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .editor-actions button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .editor-actions button:nth-child(1) { background: #f39c12; color: white; }
+        .editor-actions button:nth-child(2) { background: #9b59b6; color: white; }
+        .editor-actions button:nth-child(3) { background: #27ae60; color: white; }
+        
+        .editor-actions button:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+        
         @media (max-width: 768px) {
             .charts-section {
                 grid-template-columns: 1fr;
@@ -374,7 +497,8 @@
         <div class="subtitle">Rzeczywiste ceny spot dla Polski + porównanie wszystkich taryf</div>
         
         <div class="api-status" id="api-status">
-            <strong>🔌 API ENTSO-E:</strong> Kliknij "Pobierz ceny spot" aby pobrać rzeczywiste ceny energii z ENTSO-E Transparency Platform
+            <strong>🔌 API ENTSO-E:</strong> Kliknij "Pobierz ceny spot" aby pobrać rzeczywiste ceny energii z ENTSO-E Transparency Platform<br>
+            <small>💡 <strong>Ważne:</strong> ENTSO-E ma dane tylko z przeszłości (maksymalnie do wczoraj)</small>
         </div>
         
         <!-- Sekcja ENTSO-E API -->
@@ -390,6 +514,54 @@
                         <option value="month-analysis">Analiza miesięczna</option>
                     </select>
                 </div>
+        </div>
+        
+        <!-- Sekcja zaawansowana - ukryta domyślnie -->
+        <div class="controls-section" id="advanced-section" style="display: none;">
+            <h3>🔧 Zaawansowane profile zużycia</h3>
+            <p style="margin-bottom: 20px; color: #666;">
+                Ustaw różne profile zużycia dla poszczególnych dni tygodnia. 
+                Przydatne np. dla ładowania auta elektrycznego tylko w określone dni.
+            </p>
+            
+            <div class="profile-editor">
+                <div class="day-tabs">
+                    <button class="day-tab active" onclick="selectDay('all')" data-day="all">Wszystkie dni</button>
+                    <button class="day-tab" onclick="selectDay('monday')" data-day="monday">Poniedziałek</button>
+                    <button class="day-tab" onclick="selectDay('tuesday')" data-day="tuesday">Wtorek</button>
+                    <button class="day-tab" onclick="selectDay('wednesday')" data-day="wednesday">Środa</button>
+                    <button class="day-tab" onclick="selectDay('thursday')" data-day="thursday">Czwartek</button>
+                    <button class="day-tab" onclick="selectDay('friday')" data-day="friday">Piątek</button>
+                    <button class="day-tab" onclick="selectDay('saturday')" data-day="saturday">Sobota</button>
+                    <button class="day-tab" onclick="selectDay('sunday')" data-day="sunday">Niedziela</button>
+                </div>
+                
+                <div class="profile-controls">
+                    <div class="profile-presets">
+                        <h4>Gotowe wzorce:</h4>
+                        <div class="preset-buttons">
+                            <button onclick="applyPreset('standard')">🏠 Standard</button>
+                            <button onclick="applyPreset('morning')">🌅 Poranny</button>
+                            <button onclick="applyPreset('evening')">🌆 Wieczorny</button>
+                            <button onclick="applyPreset('night')">🌙 Nocny</button>
+                            <button onclick="applyPreset('ev_charging')">⚡ Ładowanie EV (22-6h)</button>
+                            <button onclick="applyPreset('heat_pump')">🔥 Pompa ciepła</button>
+                        </div>
+                    </div>
+                    
+                    <div class="hourly-editor">
+                        <h4 id="editor-title">Edycja profilu: Wszystkie dni</h4>
+                        <div class="hour-sliders" id="hour-sliders">
+                            <!-- Wypełniane dynamicznie -->
+                        </div>
+                        <div class="editor-actions">
+                            <button onclick="resetCurrentDay()">🔄 Reset dnia</button>
+                            <button onclick="copyToAllDays()">📋 Kopiuj na wszystkie dni</button>
+                            <button onclick="saveCustomProfile()">💾 Zapisz profil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
                 <div class="input-group" id="single-date-group">
                     <label for="date-select">Data analizy:</label>
                     <input type="date" id="date-select" value="">
@@ -410,7 +582,7 @@
                     </button>
                 </div>
                 <div class="input-group">
-                    <label for="g11f-margin">Marża G11f (zł/kWh):</label>
+                    <label for="g11f-margin">Dodatkowa marża G11f (zł/kWh):</label>
                     <input type="number" id="g11f-margin" value="0.05" step="0.001" min="0" max="0.2">
                 </div>
                 <div class="input-group">
@@ -453,8 +625,10 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label for="weekend-factor">Współczynnik weekend:</label>
-                    <input type="number" id="weekend-factor" value="1.0" step="0.1" min="0.5" max="2" title="Mnożnik zużycia w weekendy">
+                    <label>&nbsp;</label>
+                    <button class="fetch-btn" onclick="toggleAdvanced()" style="background: #2c3e50;">
+                        ⚙️ Zaawansowane profile
+                    </button>
                 </div>
             </div>
             
@@ -512,7 +686,7 @@
         <div class="hourly-analysis">
             <div class="chart-title">🕐 Analiza godzinowa taryf</div>
             
-            <h4>G11f - Dynamiczna (ceny spot + marża)</h4>
+            <h4>G11f - Dynamiczna (ceny spot + stały składnik 0,0516 zł/kWh + marża)</h4>
             <div class="hour-label">Godziny: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23</div>
             <div class="hour-grid" id="g11f-hours"></div>
             
@@ -560,8 +734,8 @@
             },
             G11f: {
                 name: "G11f - Dynamiczna", 
-                baseRate: 0.0516,
-                fixedMonthly: { "1-phase": 38.69, "3-phase": 54.37 },
+                baseRate: 0.0516, // Stały składnik zmienny stawki sieciowej
+                fixedMonthly: { "1-phase": 38.69, "3-phase": 54.37 }, // Stały składnik stawki sieciowej
                 type: "dynamic"
             },
             G12: {
@@ -633,10 +807,23 @@
             evening: [2,2,2,2,2,3,6,8,4,3,3,3,3,3,3,3,4,6,12,15,15,8,4,2], // wieczorny pik
             night: [8,8,8,6,4,2,2,2,2,2,2,2,2,2,2,2,2,3,4,6,8,12,15,15], // nocny
             flexible: [8,8,8,8,6,4,2,2,2,2,2,2,8,8,4,2,2,2,2,2,4,6,8,8], // dostosowany do G12
-            homeoffice: [3,2,2,2,2,4,6,8,10,8,6,6,6,8,8,6,6,4,3,2,2,2,2,2] // home office
+            homeoffice: [3,2,2,2,2,4,6,8,10,8,6,6,6,8,8,6,6,4,3,2,2,2,2,2], // home office
+            ev_charging: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,50,50,0], // ładowanie EV 21-23h
+            heat_pump: [6,6,6,6,6,8,4,2,2,2,2,2,2,2,2,2,2,4,6,8,8,8,8,6] // pompa ciepła
         };
         
         let currentProfile = [...usageProfiles.standard];
+        let weeklyProfiles = {
+            monday: [...usageProfiles.standard],
+            tuesday: [...usageProfiles.standard],
+            wednesday: [...usageProfiles.standard],
+            thursday: [...usageProfiles.standard],
+            friday: [...usageProfiles.standard],
+            saturday: [...usageProfiles.standard],
+            sunday: [...usageProfiles.standard]
+        };
+        let selectedDay = 'all';
+        let useWeeklyProfiles = false;
         let spotPrices = null;
         let spotPricesRange = []; // Dla zakresów dat
         let hourlyChart = null;
@@ -647,10 +834,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Ustaw wczorajszą datę (ENTSO-E ma opóźnienie ~1 dzień)
             const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
             
+            // Ustaw maksymalną datę na wczoraj dla wszystkich pól dat
             document.getElementById('date-select').value = yesterday;
-            document.getElementById('date-from').value = yesterday;
+            document.getElementById('date-select').max = yesterday;
+            document.getElementById('date-from').value = weekAgo;
+            document.getElementById('date-from').max = yesterday;
             document.getElementById('date-to').value = yesterday;
+            document.getElementById('date-to').max = yesterday;
             
             // Pobierz aktualny kurs EUR/PLN
             fetchExchangeRate();
@@ -750,6 +942,8 @@
             const btn = document.querySelector('.fetch-btn');
             
             let startDate, endDate;
+            const today = new Date();
+            const yesterday = new Date(Date.now() - 86400000);
             
             // Określ zakres dat na podstawie typu analizy
             switch (analysisType) {
@@ -759,6 +953,14 @@
                         alert('Wybierz datę analizy');
                         return;
                     }
+                    
+                    // Sprawdź czy data nie jest z przyszłości
+                    const selectedDate = new Date(singleDate);
+                    if (selectedDate >= today) {
+                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nNajnowsze dostępne dane to z wczoraj. Wybierz wcześniejszą datę.');
+                        return;
+                    }
+                    
                     startDate = endDate = singleDate;
                     break;
                     
@@ -769,6 +971,15 @@
                         alert('Wybierz zakres dat');
                         return;
                     }
+                    
+                    // Sprawdź czy daty nie są z przyszłości
+                    const startDateObj = new Date(startDate);
+                    const endDateObj = new Date(endDate);
+                    if (startDateObj >= today || endDateObj >= today) {
+                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nNajnowsze dostępne dane to z wczoraj. Wybierz wcześniejsze daty.');
+                        return;
+                    }
+                    
                     break;
                     
                 case 'week-analysis':
@@ -777,6 +988,13 @@
                         alert('Wybierz datę dla analizy tygodniowej');
                         return;
                     }
+                    
+                    const weekDateObj = new Date(weekDate);
+                    if (weekDateObj >= yesterday) {
+                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nWybierz datę z wcześniejszego tygodnia.');
+                        return;
+                    }
+                    
                     const weekStart = new Date(weekDate);
                     weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Poniedziałek
                     const weekEnd = new Date(weekStart);
@@ -792,6 +1010,12 @@
                         alert('Wybierz datę dla analizy miesięcznej');
                         return;
                     }
+                    
+                    if (monthDate >= yesterday) {
+                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nWybierz datę z wcześniejszego miesiąca.');
+                        return;
+                    }
+                    
                     startDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1).toISOString().split('T')[0];
                     endDate = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).toISOString().split('T')[0];
                     break;
@@ -824,8 +1048,8 @@
                 
                 statusDiv.className = 'api-status error';
                 statusDiv.innerHTML = `<strong>❌ Błąd API ENTSO-E:</strong> ${error.message}<br>
-                    <small>Sprawdź połączenie internetowe i spróbuj ponownie za chwilę. 
-                    API ENTSO-E może być czasowo niedostępne.</small>`;
+                    <small>💡 <strong>Wskazówka:</strong> ENTSO-E ma dane tylko z przeszłości (do wczoraj). 
+                    Jeśli wybrałeś datę z przyszłości, wybierz wcześniejszą datę.</small>`;
                 
                 // NIE MA FALLBACK - musi działać prawdziwe API
                 spotPrices = null;
@@ -1215,13 +1439,12 @@
             const monthlyUsage = parseFloat(document.getElementById('monthly-usage').value) || 300;
             const annualUsage = parseFloat(document.getElementById('annual-usage').value) || 3600;
             const installationType = document.getElementById('installation-type').value;
-            const weekendFactor = parseFloat(document.getElementById('weekend-factor').value) || 1.0;
             
             const results = [];
             
             // Oblicz koszty dla każdej taryfy
             Object.entries(tariffs).forEach(([id, tariff]) => {
-                const cost = calculateTariffCost(id, monthlyUsage, annualUsage, installationType, weekendFactor);
+                const cost = calculateTariffCost(id, monthlyUsage, annualUsage, installationType);
                 if (cost !== null) {
                     results.push({
                         id: id,
@@ -1243,7 +1466,7 @@
             createCharts();
         }
         
-        function calculateTariffCost(tariffId, monthlyUsage, annualUsage, installationType, weekendFactor) {
+        function calculateTariffCost(tariffId, monthlyUsage, annualUsage, installationType) {
             const tariff = tariffs[tariffId];
             const installKey = installationType === "1-phase" ? "1-phase" : "3-phase";
             
@@ -1252,22 +1475,25 @@
             const fixedSystem = systemCharges.subscription + getTransitionFee(annualUsage) + getPowerFee(annualUsage);
             const totalFixed = fixedNetwork + fixedSystem;
             
-            // Opłaty zmienne
+            // Opłaty zmienne - używaj profilu odpowiedniego dla kalkulacji
             let variableCost = 0;
+            const profileToUse = useWeeklyProfiles ? getAverageWeeklyProfile() : currentProfile;
             
             if (tariff.type === "flat") {
                 // G11 - stała stawka
                 variableCost = monthlyUsage * tariff.rate;
             } else if (tariff.type === "dynamic" && spotPrices) {
-                // G11f - dynamiczna na podstawie cen spot
+                // G11f - dynamiczna na podstawie cen spot + stały składnik zmienny
                 const eurPln = parseFloat(document.getElementById('eur-pln-rate').value);
                 const margin = parseFloat(document.getElementById('g11f-margin').value);
                 
                 let totalDynamicCost = 0;
                 for (let hour = 0; hour < 24; hour++) {
-                    const spotPrice = (spotPrices[hour] * eurPln / 1000) + margin;
-                    const hourlyUsage = (monthlyUsage / 30) * (currentProfile[hour] / 100);
-                    totalDynamicCost += hourlyUsage * spotPrice;
+                    // Składnik dynamiczny (spot) + stały składnik zmienny + marża
+                    const spotPriceInPLN = spotPrices[hour] * eurPln / 1000; // Przelicz €/MWh na zł/kWh
+                    const totalHourlyRate = spotPriceInPLN + tariff.baseRate + margin;
+                    const hourlyUsage = (monthlyUsage / 30) * (profileToUse[hour] / 100);
+                    totalDynamicCost += hourlyUsage * totalHourlyRate;
                 }
                 variableCost = totalDynamicCost * 30; // Przelicz na miesiąc
             } else {
@@ -1277,7 +1503,7 @@
                 
                 for (let hour = 0; hour < 24; hour++) {
                     const zone = tariff.zones[hour];
-                    const hourlyUsage = (monthlyUsage / 30) * (currentProfile[hour] / 100);
+                    const hourlyUsage = (monthlyUsage / 30) * (profileToUse[hour] / 100);
                     
                     if (zone.includes('day') || zone.includes('peak')) {
                         dayUsage += hourlyUsage;
@@ -1340,9 +1566,12 @@
             if (spotPrices) {
                 const eurPln = parseFloat(document.getElementById('eur-pln-rate').value);
                 const margin = parseFloat(document.getElementById('g11f-margin').value);
-                const dynamicPrices = spotPrices.map(price => 
-                    (price * eurPln / 1000) + margin
-                );
+                const baseRate = tariffs.G11f.baseRate; // Stały składnik zmienny 0.0516 zł/kWh
+                
+                const dynamicPrices = spotPrices.map(price => {
+                    const spotPriceInPLN = price * eurPln / 1000; // €/MWh -> zł/kWh
+                    return spotPriceInPLN + baseRate + margin; // spot + stały składnik + marża
+                });
                 renderDynamicHours('g11f-hours', dynamicPrices);
             }
         }
@@ -1381,7 +1610,7 @@
                 const ratio = (price - minPrice) / (maxPrice - minPrice);
                 const hue = 120 - (ratio * 120); // 120 = zielony, 0 = czerwony
                 cell.style.backgroundColor = `hsl(${hue}, 70%, 50%)`;
-                cell.title = `${hour}:00 - ${price.toFixed(4)} zł/kWh (spot + marża)`;
+                cell.title = `${hour}:00 - ${price.toFixed(4)} zł/kWh (spot + stały składnik + marża)`;
                 
                 container.appendChild(cell);
             });
@@ -1428,9 +1657,12 @@
             if (spotPrices) {
                 const eurPln = parseFloat(document.getElementById('eur-pln-rate').value);
                 const margin = parseFloat(document.getElementById('g11f-margin').value);
-                const dynamicPrices = spotPrices.map(price => 
-                    (price * eurPln / 1000) + margin
-                );
+                const baseRate = tariffs.G11f.baseRate; // Stały składnik zmienny
+                
+                const dynamicPrices = spotPrices.map(price => {
+                    const spotPriceInPLN = price * eurPln / 1000; // €/MWh -> zł/kWh
+                    return spotPriceInPLN + baseRate + margin; // spot + stały składnik + marża
+                });
                 
                 datasets.push({
                     label: 'G11f (dynamiczna)',
@@ -1457,13 +1689,15 @@
             });
             
             // Wykres profilu vs koszt
+            const profileToShow = useWeeklyProfiles ? getAverageWeeklyProfile() : currentProfile;
+            
             costChart = new Chart(ctx2, {
                 type: 'bar',
                 data: {
                     labels: hours,
                     datasets: [{
                         label: 'Profil zużycia (%)',
-                        data: currentProfile,
+                        data: profileToShow,
                         backgroundColor: '#27ae6050',
                         borderColor: '#27ae60',
                         borderWidth: 1
@@ -1498,7 +1732,6 @@
             document.getElementById('monthly-usage').addEventListener('input', calculateCostsAndUpdate);
             document.getElementById('annual-usage').addEventListener('input', calculateCostsAndUpdate);
             document.getElementById('installation-type').addEventListener('change', calculateCostsAndUpdate);
-            document.getElementById('weekend-factor').addEventListener('input', calculateCostsAndUpdate);
             document.getElementById('eur-pln-rate').addEventListener('input', () => {
                 updateSpotPricesDisplay();
                 calculateCostsAndUpdate();
@@ -1568,6 +1801,167 @@
                     setTimeout(fetchSpotPrices, 500);
                 }
             });
+        }
+        
+        // === FUNKCJE ZAAWANSOWANYCH PROFILI ===
+        
+        function toggleAdvanced() {
+            const section = document.getElementById('advanced-section');
+            if (section.style.display === 'none') {
+                section.style.display = 'block';
+                initializeAdvancedProfiles();
+            } else {
+                section.style.display = 'none';
+            }
+        }
+        
+        function initializeAdvancedProfiles() {
+            // Inicjalizuj edytor godzinowy
+            const container = document.getElementById('hour-sliders');
+            container.innerHTML = '';
+            
+            for (let hour = 0; hour < 24; hour++) {
+                const sliderDiv = document.createElement('div');
+                sliderDiv.className = 'hour-slider';
+                sliderDiv.innerHTML = `
+                    <div class="hour-label">${hour}h</div>
+                    <input type="number" class="hour-input" id="hour-${hour}" 
+                           min="0" max="50" step="0.1" value="${currentProfile[hour].toFixed(1)}"
+                           onchange="updateHourValue(${hour}, this.value)">
+                `;
+                container.appendChild(sliderDiv);
+            }
+        }
+        
+        function selectDay(day) {
+            // Aktualizuj aktywny tab
+            document.querySelectorAll('.day-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`[data-day="${day}"]`).classList.add('active');
+            
+            selectedDay = day;
+            
+            // Aktualizuj tytuł
+            const dayNames = {
+                'all': 'Wszystkie dni',
+                'monday': 'Poniedziałek',
+                'tuesday': 'Wtorek', 
+                'wednesday': 'Środa',
+                'thursday': 'Czwartek',
+                'friday': 'Piątek',
+                'saturday': 'Sobota',
+                'sunday': 'Niedziela'
+            };
+            
+            document.getElementById('editor-title').textContent = `Edycja profilu: ${dayNames[day]}`;
+            
+            // Załaduj profil dla wybranego dnia
+            const profileToLoad = day === 'all' ? currentProfile : weeklyProfiles[day];
+            
+            for (let hour = 0; hour < 24; hour++) {
+                const input = document.getElementById(`hour-${hour}`);
+                if (input) {
+                    input.value = profileToLoad[hour].toFixed(1);
+                }
+            }
+        }
+        
+        function updateHourValue(hour, value) {
+            const numValue = parseFloat(value) || 0;
+            
+            if (selectedDay === 'all') {
+                currentProfile[hour] = numValue;
+                // Aktualizuj także wszystkie dni tygodnia
+                Object.keys(weeklyProfiles).forEach(day => {
+                    weeklyProfiles[day][hour] = numValue;
+                });
+            } else {
+                weeklyProfiles[selectedDay][hour] = numValue;
+                useWeeklyProfiles = true;
+            }
+            
+            // Przelicz koszty
+            calculateCostsAndUpdate();
+        }
+        
+        function applyPreset(presetName) {
+            if (!usageProfiles[presetName]) return;
+            
+            const preset = [...usageProfiles[presetName]];
+            
+            if (selectedDay === 'all') {
+                currentProfile = [...preset];
+                // Aktualizuj wszystkie dni
+                Object.keys(weeklyProfiles).forEach(day => {
+                    weeklyProfiles[day] = [...preset];
+                });
+                useWeeklyProfiles = false;
+            } else {
+                weeklyProfiles[selectedDay] = [...preset];
+                useWeeklyProfiles = true;
+            }
+            
+            // Aktualizuj UI
+            for (let hour = 0; hour < 24; hour++) {
+                const input = document.getElementById(`hour-${hour}`);
+                if (input) {
+                    input.value = preset[hour].toFixed(1);
+                }
+            }
+            
+            calculateCostsAndUpdate();
+        }
+        
+        function resetCurrentDay() {
+            applyPreset('standard');
+        }
+        
+        function copyToAllDays() {
+            if (selectedDay === 'all') return;
+            
+            const profileToCopy = [...weeklyProfiles[selectedDay]];
+            
+            Object.keys(weeklyProfiles).forEach(day => {
+                weeklyProfiles[day] = [...profileToCopy];
+            });
+            
+            currentProfile = [...profileToCopy];
+            
+            alert(`Profil z ${selectedDay} skopiowany na wszystkie dni tygodnia.`);
+            calculateCostsAndUpdate();
+        }
+        
+        function saveCustomProfile() {
+            const profileData = selectedDay === 'all' ? currentProfile : weeklyProfiles[selectedDay];
+            const profileName = prompt('Nazwa profilu:', `Mój profil ${selectedDay}`);
+            
+            if (profileName) {
+                // Zapisz w localStorage
+                const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+                savedProfiles[profileName] = [...profileData];
+                localStorage.setItem('customProfiles', JSON.stringify(savedProfiles));
+                
+                alert(`Profil "${profileName}" został zapisany!`);
+            }
+        }
+        
+        function getAverageWeeklyProfile() {
+            // Oblicz średni profil tygodniowy (5 dni roboczych + 2 dni weekend)
+            const avgProfile = new Array(24).fill(0);
+            
+            for (let hour = 0; hour < 24; hour++) {
+                let total = 0;
+                total += weeklyProfiles.monday[hour] * 1; // Poniedziałek
+                total += weeklyProfiles.tuesday[hour] * 1; // Wtorek  
+                total += weeklyProfiles.wednesday[hour] * 1; // Środa
+                total += weeklyProfiles.thursday[hour] * 1; // Czwartek
+                total += weeklyProfiles.friday[hour] * 1; // Piątek
+                total += weeklyProfiles.saturday[hour] * 1; // Sobota
+                total += weeklyProfiles.sunday[hour] * 1; // Niedziela
+                
+                avgProfile[hour] = total / 7;
+            }
+            
+            return avgProfile;
         }
     </script>
 </body>
