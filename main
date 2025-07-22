@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analiza kosztów energii w czasie - taryfy G</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+        }
+        
+        .controls {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .control-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .input-group select,
+        .input-group input {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .input-group select:focus,
+        .input-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .chart-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+        
+        .tariff-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .tariff-card {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .tariff-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .tariff-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .tariff-detail strong {
+            color: #3498db;
+        }
+        
+        .quick-check {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .quick-check h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .datetime-check {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .cost-result {
+            background-color: #e8f4f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .cost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .cost-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .cost-item h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .cost-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .upload-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .upload-area {
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            background-color: #f8f9fa;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .legend-custom {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+        
+        .info-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+        }
+        
+        .analysis-results {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .best-tariff {
+            background-color: #d4edda;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .control-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-wrapper {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Analiza kosztów energii elektrycznej - Taryfy G</h1>
+        
+        <!-- Kontrolki -->
+        <div class="controls">
+            <h2>Ustawienia wykresu</h2>
+            <div class="control-group">
+                <div class="input-group">
+                    <label for="tariff-select">Wybierz taryfę:</label>
+                    <select id="tariff-select" multiple size="8">
+                        <option value="G11" selected>G11 - jednotaryfowa</option>
+                        <option value="G11f">G11f - jednotaryfowa (cena dynamiczna)</option>
+                        <option value="G12" selected>G12 - dwutaryfowa (dzień/noc)</option>
+                        <option value="G12w" selected>G12w - dwutaryfowa (weekendy w nocy)</option>
+                        <option value="G12r">G12r - dwutaryfowa (szczyt/pozaszczyt)</option>
+                        <option value="G12as">G12as - dwutaryfowa (nocna dla akumulacji)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="view-type">Widok:</label>
+                    <select id="view-type">
+                        <option value="day">Dzień (24h)</option>
+                        <option value="week">Tydzień</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="season">Sezon:</label>
+                    <select id="season">
+                        <option value="summer">Lato (kwiecień-wrzesień)</option>
+                        <option value="winter">Zima (październik-marzec)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="info-box">
+                <strong>Wskazówka:</strong> Przytrzymaj Ctrl/Cmd aby wybrać kilka taryf do porównania
+            </div>
+        </div>
+        
+        <!-- Informacje o taryfach -->
+        <div class="chart-container">
+            <h2>Aktualne stawki (brutto z VAT)</h2>
+            <div class="tariff-info" id="tariff-info"></div>
+        </div>
+        
+        <!-- Wykres -->
+        <div class="chart-container">
+            <h2>Koszt 1 kWh w czasie (sprzedaż + dystrybucja)</h2>
+            <div class="chart-wrapper">
+                <canvas id="hourlyChart"></canvas>
+            </div>
+            <div class="legend-custom" id="custom-legend"></div>
+        </div>
+        
+        <!-- Szybkie sprawdzenie -->
+        <div class="quick-check">
+            <h2>Sprawdź koszt energii w konkretnym czasie</h2>
+            <div class="datetime-check">
+                <div class="input-group">
+                    <label for="check-day">Dzień tygodnia:</label>
+                    <select id="check-day">
+                        <option value="1">Poniedziałek</option>
+                        <option value="2">Wtorek</option>
+                        <option value="3">Środa</option>
+                        <option value="4">Czwartek</option>
+                        <option value="5">Piątek</option>
+                        <option value="6">Sobota</option>
+                        <option value="0">Niedziela</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="check-hour">Godzina:</label>
+                    <select id="check-hour">
+                        <!-- Opcje zostaną dodane przez JavaScript -->
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="check-month">Miesiąc:</label>
+                    <select id="check-month">
+                        <option value="1">Styczeń</option>
+                        <option value="2">Luty</option>
+                        <option value="3">Marzec</option>
+                        <option value="4">Kwiecień</option>
+                        <option value="5">Maj</option>
+                        <option value="6">Czerwiec</option>
+                        <option value="7">Lipiec</option>
+                        <option value="8">Sierpień</option>
+                        <option value="9">Wrzesień</option>
+                        <option value="10">Październik</option>
+                        <option value="11">Listopad</option>
+                        <option value="12">Grudzień</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>&nbsp;</label>
+                    <button onclick="checkSpecificTime()">Sprawdź</button>
+                </div>
+            </div>
+            <div class="cost-result" id="quick-result" style="display: none;">
+                <h3>Koszt 1 kWh w wybranym czasie:</h3>
+                <div class="cost-grid" id="cost-grid"></div>
+            </div>
+        </div>
+        
+        <!-- Sekcja uploadu profilu zużycia -->
+        <div class="upload-section">
+            <h2>Analiza własnego profilu zużycia</h2>
+            <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                <p>Kliknij aby wgrać plik CSV z godzinowym zużyciem</p>
+                <p style="font-size: 0.9rem; color: #7f8c8d; margin-top: 10px;">
+                    Format: godzina,zużycie_kWh (np. "2024-01-15 14:00,0.5")
+                </p>
+                <input type="file" id="file-input" accept=".csv" style="display: none;" onchange="handleFileUpload(event)">
+            </div>
+            <div class="input-group" style="margin-top: 20px;">
+                <label>Lub wprowadź przykładowe zużycie miesięczne (kWh):</label>
+                <input type="number" id="monthly-usage" value="177" min="0" step="1">
+                <button onclick="generateSampleProfile()" style="margin-top: 10px;">Generuj profil przykładowy</button>
+            </div>
+        </div>
+        
+        <!-- Wyniki analizy -->
+        <div class="analysis-results" id="analysis-results" style="display: none;">
+            <h2>Analiza kosztów dla Twojego profilu zużycia</h2>
+            <table id="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Taryfa</th>
+                        <th>Koszt energii</th>
+                        <th>Koszt dystrybucji</th>
+                        <th>Opłaty stałe (miesiąc)</th>
+                        <th>RAZEM</th>
+                        <th>Różnica do najtańszej</th>
+                    </tr>
+                </thead>
+                <tbody id="analysis-tbody"></tbody>
+            </table>
+            <div class="chart-container" style="margin-top: 30px;">
+                <h3>Porównanie kosztów miesięcznych</h3>
+                <div class="chart-wrapper" style="height: 300px;">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mapa cieplna -->
+        <div class="chart-container">
+            <h2>Mapa cieplna kosztów - kiedy energia jest najtańsza?</h2>
+            <div class="control-group">
+                <div class="input-group">
+                    <label for="heatmap-tariff">Wybierz taryfę:</label>
+                    <select id="heatmap-tariff">
+                        <option value="G11">G11 - jednotaryfowa</option>
+                        <option value="G11f">G11f - jednotaryfowa (cena dynamiczna)</option>
+                        <option value="G12">G12 - dwutaryfowa</option>
+                        <option value="G12w" selected>G12w - dwutaryfowa (weekendy w nocy)</option>
+                        <option value="G12r">G12r - dwutaryfowa (szczyt/pozaszczyt)</option>
+                        <option value="G12as">G12as - dwutaryfowa (nocna akumulacyjna)</option>
+                    </select>
+                </div>
+            </div>
+            <div id="heatmap-container" style="margin-top: 20px;">
+                <canvas id="heatmapCanvas" width="800" height="200"></canvas>
+            </div>
+            <div class="legend-custom" style="justify-content: space-between; margin-top: 10px;">
+                <span style="color: #27ae60;">← Najtańsze godziny</span>
+                <span style="color: #e74c3c;">Najdroższe godziny →</span>
+            </div>
+        </div>
+        
+        <!-- Kalkulator oszczędności dla urządzeń -->
+        <div class="chart-container">
+            <h2>Kalkulator oszczędności - przenieś zużycie na tańsze godziny</h2>
+            <div class="control-group">
+                <div class="input-group">
+                    <label for="device-select">Wybierz urządzenie:</label>
+                    <select id="device-select">
+                        <option value="washing">Pralka (1 cykl = 1.5 kWh)</option>
+                        <option value="dishwasher">Zmywarka (1 cykl = 1.2 kWh)</option>
+                        <option value="dryer">Suszarka (1 cykl = 2.5 kWh)</option>
+                        <option value="ev">Samochód elektryczny (ładowanie 40 kWh)</option>
+                        <option value="heating">Ogrzewanie elektryczne (dziennie 20 kWh)</option>
+                        <option value="boiler">Bojler (dziennie 8 kWh)</option>
+                        <option value="custom">Własne urządzenie</option>
+                    </select>
+                </div>
+                <div class="input-group" id="custom-device-input" style="display: none;">
+                    <label for="custom-consumption">Zużycie (kWh):</label>
+                    <input type="number" id="custom-consumption" value="1" min="0.1" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="device-frequency">Częstotliwość użycia:</label>
+                    <select id="device-frequency">
+                        <option value="daily">Codziennie</option>
+                        <option value="weekly">Raz w tygodniu</option>
+                        <option value="monthly">Raz w miesiącu</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="current-hour">Obecnie używasz o godzinie:</label>
+                    <select id="current-hour">
+                        <option value="18">18:00 (typowa pora)</option>
+                        <option value="19">19:00</option>
+                        <option value="20">20:00</option>
+                        <option value="12">12:00</option>
+                        <option value="8">8:00</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="calculateDeviceSavings()" style="margin-top: 20px;">Oblicz oszczędności</button>
+            
+            <div id="device-savings-result" style="display: none; margin-top: 20px;">
+                <div class="chart-wrapper" style="height: 300px;">
+                    <canvas id="savingsChart"></canvas>
+                </div>
+                <div class="cost-result" style="margin-top: 20px;">
+                    <h3>Potencjalne oszczędności</h3>
+                    <div id="savings-details"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile typowych gospodarstw -->
+        <div class="chart-container">
+            <h2>Profile typowych gospodarstw domowych</h2>
+            <div class="control-group">
+                <div class="input-group">
+                    <label for="household-profile">Wybierz profil:</label>
+                    <select id="household-profile">
+                        <option value="single">Single pracujący (150 kWh/mies.)</option>
+                        <option value="couple">Para pracująca (200 kWh/mies.)</option>
+                        <option value="family">Rodzina z dziećmi (300 kWh/mies.)</option>
+                        <option value="remote">Praca zdalna (250 kWh/mies.)</option>
+                        <option value="retired">Emeryci (180 kWh/mies.)</option>
+                        <option value="heat-pump">Dom z pompą ciepła (500 kWh/mies.)</option>
+                        <option value="electric-heating">Ogrzewanie elektryczne (800 kWh/mies.)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>&nbsp;</label>
+                    <button onclick="analyzeHouseholdProfile()">Analizuj profil</button>
+                </div>
+            </div>
+            
+            <div id="household-analysis" style="display: none; margin-top: 20px;">
+                <div class="info-box">
+                    <p id="profile-description"></p>
+                </div>
+                <div class="chart-wrapper" style="height: 300px; margin-top: 20px;">
+                    <canvas id="householdChart"></canvas>
+                </div>
+                <div class="cost-result" style="margin-top: 20px;">
+                    <h3>Szacunkowe koszty miesięczne</h3>
+                    <div id="household-costs"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Dane taryf - stawki brutto (z VAT)
+        const tariffs = {
+            G11: {
+                name: "G11 - jednotaryfowa",
+                color: "#e74c3c",
+                energy: 0.3437, // stała cena energii
+                distribution: {
+                    variable: 0.3437,
+                    fixed: 11.54,
+                    subscription: 2.28,
+                    quality: 0.0321,
+                    oze: 0.0035,
+                    cogeneration: 0.0030,
+                    transition: 0.33,
+                    capacity: 0.1412
+                }
+            },
+            G11f: {
+                name: "G11f - jednotaryfowa (dynamiczna)",
+                color: "#f39c12",
+                energy: 0.0516, // przykładowa cena dynamiczna
+                distribution: {
+                    variable: 0.0516,
+                    fixed: 54.37,
+                    subscription: 2.28,
+                    quality: 0.0321,
+                    oze: 0.0035,
+                    cogeneration: 0.0030,
+                    transition: 0.33,
+                    capacity: 0.1412
+                }
+            },
+            G12: {
+                name: "G12 - dwutaryfowa",
+                color: "#3498db",
+                energy: {
+                    day: 0.3791,
+                    night: 0.0816
+                },
+                distribution: {
+                    variableDay: 0.3791,
+                    variableNight: 0.0816,
+                    fixed: 19.77,
+                    subscription: 2.28,
+                    quality: 0.0321,
+                    oze: 0.0035,
+                    cogeneration: 0.0030,
+                    transition: 0.33,
+                    capacity: 0.1412
+                },
+                zones: {
+                    day: { start: 6, end: 13, start2: 15, end2: 22 },
+                    night: { start: 22, end: 6, start2: 13, end2: 15 }
+                }
+            },
+            G12w: {
+                name: "G12w - weekendy w nocy",
+                color: "#2ecc71",
+                energy: {
+                    day: 0.3960,
+                    night: 0.0838
+                },
+                distribution: {
+                    variableDay: 0.3960,
+                    variableNight: 0.0838,
+                    fixed: 19.77,
+                    subscription: 2.28,
+                    quality: 0.0321,
+                    oze: 0.0035,
+                    cogeneration: 0.0030,
+                    transition: 0.33,
+                    capacity: 0.1412
+                },
+                zones: {
+                    day: { start: 6, end: 13, start2: 15, end2: 22 },
+                    night: { start: 22, end: 6, start2: 13, end2: 15 },
+                    weekendAllNight: true
+                }
+            },
+            G12r: {
+                name: "G12r - szczyt/pozaszczyt",
+                color: "#9b59b6",
+                energy: {
+                    peak: 0.3590,
+                    offPeak: 0.0870
+                },
+                distribution: {
+                    variablePeak: 0.3590,
+                    variableOffPeak: 0.0870,
+                    fixed: 19.77,
+                    subscription: 2.28,
+                    quality: 0.0321,
+                    oze: 0.0035,
+                    cogeneration: 0.0030,
+                    transition: 0.33,
+                    capacity: 0.1412
+                },
+                zones: {
+                    peak: { start: 7, end: 13, start2: 16, end2: 22 },
+                    offPeak: { start: 22, end: 7, start2: 13, end2: 16 }
+                }
+            },
+            G12as: {
+                name: "G12as - nocna akumulacyjna",
+                color: "#1abc9c",
+                energy: {
+                    day: 0.3437,
+                    night: 0.0332
+                },
+                distribution: {
+                    variableDay: 0.3437,
+                    variableNight: 0.0332,
+                    fixed: 23.08,
+                    subscription: 2.28,
+                    quality: 0.0321,
+                    oze: 0.0035,
+                    cogeneration: 0.0030,
+                    transition: 0.33,
+                    capacity: 0.1412
+                },
+                zones: {
+                    day: { start: 6, end: 22 },
+                    night: { start: 22, end: 6 }
+                }
+            }
+        };
+        
+        // Zmienne globalne
+        let userProfile = null;
+        
+        // Profile gospodarstw domowych
+        const householdProfiles = {
+            single: {
+                name: "Single pracujący",
+                monthlyUsage: 150,
+                description: "Mieszkanie 1-osobowe, praca poza domem, podstawowe urządzenia",
+                pattern: [
+                    0.03, 0.02, 0.02, 0.02, 0.02, 0.03,  // 0-5
+                    0.05, 0.08, 0.04, 0.02, 0.02, 0.02,  // 6-11
+                    0.02, 0.03, 0.02, 0.02, 0.04, 0.06,  // 12-17
+                    0.10, 0.12, 0.10, 0.08, 0.06, 0.04   // 18-23
+                ]
+            },
+            couple: {
+                name: "Para pracująca",
+                monthlyUsage: 200,
+                description: "Mieszkanie 2-osobowe, oboje pracują, standardowe wyposażenie",
+                pattern: [
+                    0.03, 0.02, 0.02, 0.02, 0.03, 0.04,  // 0-5
+                    0.06, 0.09, 0.05, 0.03, 0.02, 0.02,  // 6-11
+                    0.03, 0.04, 0.03, 0.03, 0.05, 0.07,  // 12-17
+                    0.11, 0.10, 0.08, 0.06, 0.05, 0.04   // 18-23
+                ]
+            },
+            family: {
+                name: "Rodzina z dziećmi",
+                monthlyUsage: 300,
+                description: "Dom 4-osobowy, dzieci w szkole, pełne wyposażenie AGD",
+                pattern: [
+                    0.04, 0.03, 0.02, 0.02, 0.03, 0.05,  // 0-5
+                    0.08, 0.10, 0.06, 0.04, 0.03, 0.04,  // 6-11
+                    0.05, 0.06, 0.05, 0.06, 0.08, 0.09,  // 12-17
+                    0.10, 0.09, 0.07, 0.05, 0.04, 0.03   // 18-23
+                ]
+            },
+            remote: {
+                name: "Praca zdalna",
+                monthlyUsage: 250,
+                description: "1-2 osoby, praca z domu, ciągłe użycie komputera i klimatyzacji",
+                pattern: [
+                    0.04, 0.03, 0.02, 0.02, 0.03, 0.04,  // 0-5
+                    0.05, 0.06, 0.07, 0.07, 0.06, 0.06,  // 6-11
+                    0.06, 0.07, 0.06, 0.06, 0.07, 0.06,  // 12-17
+                    0.07, 0.06, 0.05, 0.04, 0.04, 0.03   // 18-23
+                ]
+            },
+            retired: {
+                name: "Emeryci",
+                monthlyUsage: 180,
+                description: "2 osoby, cały dzień w domu, oszczędne gospodarowanie",
+                pattern: [
+                    0.03, 0.02, 0.02, 0.02, 0.03, 0.04,  // 0-5
+                    0.06, 0.07, 0.06, 0.05, 0.05, 0.05,  // 6-11
+                    0.06, 0.05, 0.05, 0.05, 0.06, 0.07,  // 12-17
+                    0.08, 0.07, 0.05, 0.04, 0.03, 0.03   // 18-23
+                ]
+            },
+            "heat-pump": {
+                name: "Dom z pompą ciepła",
+                monthlyUsage: 500,
+                description: "Dom jednorodzinny, ogrzewanie pompą ciepła, taryfa nocna korzystna",
+                pattern: [
+                    0.08, 0.07, 0.06, 0.06, 0.07, 0.08,  // 0-5 (pompa pracuje w nocy)
+                    0.06, 0.05, 0.04, 0.03, 0.03, 0.03,  // 6-11
+                    0.03, 0.04, 0.03, 0.04, 0.05, 0.06,  // 12-17
+                    0.07, 0.06, 0.05, 0.06, 0.07, 0.08   // 18-23
+                ]
+            },
+            "electric-heating": {
+                name: "Ogrzewanie elektryczne",
+                monthlyUsage: 800,
+                description: "Dom z ogrzewaniem elektrycznym, piece akumulacyjne, taryfa G12as idealna",
+                pattern: [
+                    0.10, 0.09, 0.08, 0.08, 0.09, 0.10,  // 0-5 (ładowanie pieców)
+                    0.05, 0.04, 0.03, 0.02, 0.02, 0.02,  // 6-11
+                    0.02, 0.03, 0.02, 0.03, 0.04, 0.05,  // 12-17
+                    0.06, 0.05, 0.04, 0.05, 0.08, 0.10   // 18-23
+                ]
+            }
+        };
+        
+        // Urządzenia do kalkulatora oszczędności
+        const devices = {
+            washing: { name: "Pralka", consumption: 1.5, icon: "🧺" },
+            dishwasher: { name: "Zmywarka", consumption: 1.2, icon: "🍽️" },
+            dryer: { name: "Suszarka", consumption: 2.5, icon: "👔" },
+            ev: { name: "Samochód elektryczny", consumption: 40, icon: "🚗" },
+            heating: { name: "Ogrzewanie elektryczne", consumption: 20, icon: "🔥" },
+            boiler: { name: "Bojler", consumption: 8, icon: "💧" }
+        };
+        
+        // Inicjalizacja
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wypełnij opcje godzin
+            const hourSelect = document.getElementById('check-hour');
+            for (let i = 0; i < 24; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `${i}:00 - ${i}:59`;
+                hourSelect.appendChild(option);
+            }
+            
+            // Pokaż informacje o taryfach
+            updateTariffInfo();
+            
+            // Rysuj wykres
+            updateChart();
+            
+            // Rysuj mapę cieplną
+            drawHeatmap();
+            
+            // Event listeners
+            document.getElementById('tariff-select').addEventListener('change', updateChart);
+            document.getElementById('view-type').addEventListener('change', updateChart);
+            document.getElementById('season').addEventListener('change', updateChart);
+            document.getElementById('heatmap-tariff').addEventListener('change', drawHeatmap);
+            document.getElementById('device-select').addEventListener('change', function() {
+                document.getElementById('custom-device-input').style.display = 
+                    this.value === 'custom' ? 'block' : 'none';
+            });
+        });
+        
+        // Funkcja obliczająca koszt dla danej godziny
+        function calculateHourlyCost(tariffKey, hour, dayOfWeek, month) {
+            const tariff = tariffs[tariffKey];
+            const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+            const isSummer = month >= 4 && month <= 9;
+            
+            let energyCost = 0;
+            let distributionCost = 0;
+            
+            // Oblicz koszt energii
+            if (tariffKey === 'G11' || tariffKey === 'G11f') {
+                energyCost = tariff.energy;
+                distributionCost = tariff.distribution.variable;
+            } else if (tariffKey === 'G12' || tariffKey === 'G12w') {
+                const isNight = isInNightZone(hour, tariff.zones, isWeekend && tariffKey === 'G12w');
+                energyCost = isNight ? tariff.energy.night : tariff.energy.day;
+                distributionCost = isNight ? tariff.distribution.variableNight : tariff.distribution.variableDay;
+            } else if (tariffKey === 'G12r') {
+                const isPeak = isInPeakZone(hour, tariff.zones);
+                energyCost = isPeak ? tariff.energy.peak : tariff.energy.offPeak;
+                distributionCost = isPeak ? tariff.distribution.variablePeak : tariff.distribution.variableOffPeak;
+            } else if (tariffKey === 'G12as') {
+                const isNight = hour >= 22 || hour < 6;
+                energyCost = isNight ? tariff.energy.night : tariff.energy.day;
+                distributionCost = isNight ? tariff.distribution.variableNight : tariff.distribution.variableDay;
+            }
+            
+            // Dodaj pozostałe opłaty dystrybucyjne
+            const otherDistributionCosts = tariff.distribution.quality + 
+                                         tariff.distribution.oze + 
+                                         tariff.distribution.cogeneration + 
+                                         tariff.distribution.capacity;
+            
+            return energyCost + distributionCost + otherDistributionCosts;
+        }
+        
+        // Funkcje pomocnicze do określania stref
+        function isInNightZone(hour, zones, weekendAllNight) {
+            if (weekendAllNight) return true;
+            
+            // Sprawdź pierwszy przedział nocny
+            if (zones.night.start > zones.night.end) {
+                // Przedział przez północ (np. 22-6)
+                if (hour >= zones.night.start || hour < zones.night.end) return true;
+            } else {
+                // Normalny przedział
+                if (hour >= zones.night.start && hour < zones.night.end) return true;
+            }
+            
+            // Sprawdź drugi przedział nocny jeśli istnieje
+            if (zones.night.start2 !== undefined && zones.night.end2 !== undefined) {
+                if (hour >= zones.night.start2 && hour < zones.night.end2) return true;
+            }
+            
+            return false;
+        }
+        
+        function isInPeakZone(hour, zones) {
+            return (hour >= zones.peak.start && hour < zones.peak.end) ||
+                   (hour >= zones.peak.start2 && hour < zones.peak.end2);
+        }
+        
+        // Aktualizacja informacji o taryfach
+        function updateTariffInfo() {
+            const container = document.getElementById('tariff-info');
+            container.innerHTML = '';
+            
+            Object.entries(tariffs).forEach(([key, tariff]) => {
+                const card = document.createElement('div');
+                card.className = 'tariff-card';
+                
+                let content = `<h3>${tariff.name}</h3>`;
+                
+                if (tariff.energy.day) {
+                    content += `<div class="tariff-detail"><span>Energia dzienna:</span><strong>${tariff.energy.day.toFixed(4)} zł/kWh</strong></div>`;
+                    content += `<div class="tariff-detail"><span>Energia nocna:</span><strong>${(tariff.energy.night || tariff.energy.offPeak).toFixed(4)} zł/kWh</strong></div>`;
+                } else if (tariff.energy.peak) {
+                    content += `<div class="tariff-detail"><span>Energia szczyt:</span><strong>${tariff.energy.peak.toFixed(4)} zł/kWh</strong></div>`;
+                    content += `<div class="tariff-detail"><span>Energia pozaszczyt:</span><strong>${tariff.energy.offPeak.toFixed(4)} zł/kWh</strong></div>`;
+                } else {
+                    content += `<div class="tariff-detail"><span>Energia:</span><strong>${tariff.energy.toFixed(4)} zł/kWh</strong></div>`;
+                }
+                
+                content += `<div class="tariff-detail"><span>Opłata stała:</span><strong>${tariff.distribution.fixed.toFixed(2)} zł/mies.</strong></div>`;
+                
+                card.innerHTML = content;
+                container.appendChild(card);
+            });
+        }
+        
+        // Aktualizacja wykresu
+        function updateChart() {
+            const selectedTariffs = Array.from(document.getElementById('tariff-select').selectedOptions).map(opt => opt.value);
+            const viewType = document.getElementById('view-type').value;
+            const season = document.getElementById('season').value;
+            
+            if (selectedTariffs.length === 0) {
+                alert('Wybierz przynajmniej jedną taryfę');
+                return;
+            }
+            
+            console.log('Updating chart with tariffs:', selectedTariffs);
+            
+            const canvas = document.getElementById('hourlyChart');
+            if (!canvas) {
+                console.error('Canvas element not found!');
+                return;
+            }
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Przygotuj dane
+            let labels = [];
+            let datasets = [];
+            
+            if (viewType === 'day') {
+                labels = Array.from({length: 24}, (_, i) => `${i}:00`);
+                
+                selectedTariffs.forEach(tariffKey => {
+                    const tariff = tariffs[tariffKey];
+                    const data = [];
+                    
+                    for (let hour = 0; hour < 24; hour++) {
+                        const cost = calculateHourlyCost(tariffKey, hour, 1, season === 'summer' ? 6 : 1);
+                        data.push(cost);
+                    }
+                    
+                    datasets.push({
+                        label: tariff.name,
+                        data: data,
+                        borderColor: tariff.color,
+                        backgroundColor: tariff.color + '20',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        fill: false
+                    });
+                });
+            } else {
+                // Widok tygodniowy
+                const days = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'];
+                labels = [];
+                for (let day = 0; day < 7; day++) {
+                    for (let hour = 0; hour < 24; hour++) {
+                        if (hour % 6 === 0) {
+                            labels.push(`${days[day]} ${hour}:00`);
+                        } else {
+                            labels.push('');
+                        }
+                    }
+                }
+                
+                selectedTariffs.forEach(tariffKey => {
+                    const tariff = tariffs[tariffKey];
+                    const data = [];
+                    
+                    for (let day = 0; day < 7; day++) {
+                        for (let hour = 0; hour < 24; hour++) {
+                            const dayOfWeek = day === 6 ? 0 : day + 1;
+                            const cost = calculateHourlyCost(tariffKey, hour, dayOfWeek, season === 'summer' ? 6 : 1);
+                            data.push(cost);
+                        }
+                    }
+                    
+                    datasets.push({
+                        label: tariff.name,
+                        data: data,
+                        borderColor: tariff.color,
+                        backgroundColor: tariff.color + '20',
+                        borderWidth: 2,
+                        tension: 0.1,
+                        pointRadius: viewType === 'week' ? 0 : 3,
+                        fill: false
+                    });
+                });
+            }
+            
+            console.log('Chart data prepared:', { labels: labels.length, datasets: datasets.length });
+            
+            // Zniszcz stary wykres jeśli istnieje
+            if (window.hourlyChart && typeof window.hourlyChart.destroy === 'function') {
+                window.hourlyChart.destroy();
+            }
+            
+            try {
+                // Stwórz nowy wykres
+                window.hourlyChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: viewType === 'day' ? 'Koszt 1 kWh w ciągu dnia' : 'Koszt 1 kWh w ciągu tygodnia',
+                                font: {
+                                    size: 16
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.parsed.y.toFixed(4) + ' zł/kWh';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: true,
+                                    color: '#f0f0f0'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Koszt [zł/kWh]'
+                                },
+                                grid: {
+                                    display: true,
+                                    color: '#f0f0f0'
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                console.log('Chart created successfully');
+            } catch (error) {
+                console.error('Error creating chart:', error);
+                alert('Błąd podczas tworzenia wykresu. Sprawdź konsolę przeglądarki.');
+            }
+            
+            // Aktualizuj legendę
+            updateCustomLegend(selectedTariffs);
+        }
+        
+        // Własna legenda
+        function updateCustomLegend(selectedTariffs) {
+            const legendContainer = document.getElementById('custom-legend');
+            legendContainer.innerHTML = '';
+            
+            selectedTariffs.forEach(tariffKey => {
+                const tariff = tariffs[tariffKey];
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                item.innerHTML = `
+                    <div class="legend-color" style="background-color: ${tariff.color}"></div>
+                    <span>${tariff.name}</span>
+                `;
+                legendContainer.appendChild(item);
+            });
+        }
+        
+        // Sprawdzenie kosztu w konkretnym czasie
+        function checkSpecificTime() {
+            const day = parseInt(document.getElementById('check-day').value);
+            const hour = parseInt(document.getElementById('check-hour').value);
+            const month = parseInt(document.getElementById('check-month').value);
+            
+            const costGrid = document.getElementById('cost-grid');
+            costGrid.innerHTML = '';
+            
+            Object.entries(tariffs).forEach(([key, tariff]) => {
+                const cost = calculateHourlyCost(key, hour, day, month);
+                
+                const costItem = document.createElement('div');
+                costItem.className = 'cost-item';
+                costItem.innerHTML = `
+                    <h4>${tariff.name}</h4>
+                    <div class="cost-value">${cost.toFixed(4)} zł</div>
+                    <small>za 1 kWh</small>
+                `;
+                costGrid.appendChild(costItem);
+            });
+            
+            document.getElementById('quick-result').style.display = 'block';
+        }
+        
+        // Obsługa pliku CSV
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+                parseCSV(content);
+            };
+            reader.readAsText(file);
+        }
+        
+        // Parsowanie CSV
+        function parseCSV(content) {
+            const lines = content.split('\n');
+            userProfile = [];
+            
+            lines.forEach(line => {
+                if (line.trim()) {
+                    const [datetime, usage] = line.split(',');
+                    const date = new Date(datetime.trim());
+                    const kWh = parseFloat(usage.trim());
+                    
+                    if (!isNaN(date.getTime()) && !isNaN(kWh)) {
+                        userProfile.push({
+                            date: date,
+                            hour: date.getHours(),
+                            dayOfWeek: date.getDay(),
+                            month: date.getMonth() + 1,
+                            usage: kWh
+                        });
+                    }
+                }
+            });
+            
+            if (userProfile.length > 0) {
+                analyzeUserProfile();
+            }
+        }
+        
+        // Generowanie przykładowego profilu
+        function generateSampleProfile() {
+            const monthlyUsage = parseFloat(document.getElementById('monthly-usage').value) || 177;
+            const dailyAverage = monthlyUsage / 30;
+            
+            userProfile = [];
+            
+            // Typowy profil gospodarstwa domowego
+            const typicalProfile = [
+                0.05, 0.04, 0.03, 0.03, 0.04, 0.06,  // 0-5
+                0.08, 0.10, 0.08, 0.06, 0.05, 0.04,  // 6-11
+                0.05, 0.06, 0.05, 0.06, 0.08, 0.10,  // 12-17
+                0.12, 0.10, 0.08, 0.06, 0.05, 0.04   // 18-23
+            ];
+            
+            // Generuj dane dla 30 dni
+            for (let day = 0; day < 30; day++) {
+                const date = new Date();
+                date.setDate(date.getDate() - (30 - day));
+                
+                typicalProfile.forEach((factor, hour) => {
+                    userProfile.push({
+                        date: new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour),
+                        hour: hour,
+                        dayOfWeek: date.getDay(),
+                        month: date.getMonth() + 1,
+                        usage: dailyAverage * factor
+                    });
+                });
+            }
+            
+            analyzeUserProfile();
+        }
+        
+        // Analiza profilu użytkownika
+        function analyzeUserProfile() {
+            const results = {};
+            
+            Object.keys(tariffs).forEach(tariffKey => {
+                results[tariffKey] = {
+                    energyCost: 0,
+                    distributionCost: 0,
+                    fixedCosts: 0
+                };
+                
+                userProfile.forEach(entry => {
+                    const hourlyCost = calculateHourlyCost(tariffKey, entry.hour, entry.dayOfWeek, entry.month);
+                    const totalCost = hourlyCost * entry.usage;
+                    
+                    // Rozdziel koszty na energię i dystrybucję
+                    if (tariffKey === 'G11' || tariffKey === 'G11f') {
+                        results[tariffKey].energyCost += tariffs[tariffKey].energy * entry.usage;
+                    } else {
+                        // Dla taryf wielostrefowych - uproszczone obliczenie
+                        const energyRate = hourlyCost * 0.5; // Przybliżenie - około połowa to energia
+                        results[tariffKey].energyCost += energyRate * entry.usage;
+                    }
+                    
+                    results[tariffKey].distributionCost += (hourlyCost - results[tariffKey].energyCost / userProfile.length) * entry.usage;
+                });
+                
+                // Dodaj opłaty stałe (miesięczne)
+                const tariff = tariffs[tariffKey];
+                results[tariffKey].fixedCosts = tariff.distribution.fixed + 
+                                               tariff.distribution.subscription + 
+                                               tariff.distribution.transition;
+            });
+            
+            displayAnalysisResults(results);
+        }
+        
+        // Wyświetlanie wyników analizy
+        function displayAnalysisResults(results) {
+            const tbody = document.getElementById('analysis-tbody');
+            tbody.innerHTML = '';
+            
+            // Znajdź najtańszą taryfę
+            let minTotal = Infinity;
+            let bestTariff = '';
+            
+            Object.entries(results).forEach(([tariffKey, costs]) => {
+                const total = costs.energyCost + costs.distributionCost + costs.fixedCosts;
+                if (total < minTotal) {
+                    minTotal = total;
+                    bestTariff = tariffKey;
+                }
+            });
+            
+            // Przygotuj dane do wykresu
+            const chartLabels = [];
+            const chartData = [];
+            const chartColors = [];
+            
+            // Wyświetl wyniki
+            Object.entries(results).forEach(([tariffKey, costs]) => {
+                const total = costs.energyCost + costs.distributionCost + costs.fixedCosts;
+                const difference = total - minTotal;
+                
+                const row = document.createElement('tr');
+                if (tariffKey === bestTariff) {
+                    row.className = 'best-tariff';
+                }
+                
+                row.innerHTML = `
+                    <td>${tariffs[tariffKey].name}</td>
+                    <td>${costs.energyCost.toFixed(2)} zł</td>
+                    <td>${costs.distributionCost.toFixed(2)} zł</td>
+                    <td>${costs.fixedCosts.toFixed(2)} zł</td>
+                    <td><strong>${total.toFixed(2)} zł</strong></td>
+                    <td>${difference > 0 ? '+' + difference.toFixed(2) + ' zł' : '-'}</td>
+                `;
+                
+                tbody.appendChild(row);
+                
+                // Dane do wykresu
+                chartLabels.push(tariffs[tariffKey].name);
+                chartData.push(total);
+                chartColors.push(tariffs[tariffKey].color);
+            });
+            
+            document.getElementById('analysis-results').style.display = 'block';
+            
+            // Rysuj wykres porównawczy
+            drawComparisonChart(chartLabels, chartData, chartColors);
+        }
+        
+        // Wykres porównawczy
+        function drawComparisonChart(labels, data, colors) {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            
+            if (window.comparisonChart && typeof window.comparisonChart.destroy === 'function') {
+                window.comparisonChart.destroy();
+            }
+            
+            window.comparisonChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Koszt miesięczny',
+                        data: data,
+                        backgroundColor: colors.map(c => c + '80'),
+                        borderColor: colors,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Porównanie kosztów miesięcznych'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Koszt [zł]'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Mapa cieplna
+        function drawHeatmap() {
+            const canvas = document.getElementById('heatmapCanvas');
+            const ctx = canvas.getContext('2d');
+            const tariffKey = document.getElementById('heatmap-tariff').value;
+            
+            // Ustaw rozmiar canvas
+            const cellWidth = 30;
+            const cellHeight = 25;
+            const labelWidth = 60;
+            const labelHeight = 20;
+            
+            canvas.width = labelWidth + 24 * cellWidth;
+            canvas.height = labelHeight + 7 * cellHeight;
+            
+            // Dni tygodnia
+            const days = ['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Ndz'];
+            
+            // Znajdź min/max koszt
+            let minCost = Infinity;
+            let maxCost = 0;
+            const costs = [];
+            
+            for (let day = 0; day < 7; day++) {
+                costs[day] = [];
+                for (let hour = 0; hour < 24; hour++) {
+                    const dayOfWeek = day === 6 ? 0 : day + 1;
+                    const cost = calculateHourlyCost(tariffKey, hour, dayOfWeek, 6);
+                    costs[day][hour] = cost;
+                    minCost = Math.min(minCost, cost);
+                    maxCost = Math.max(maxCost, cost);
+                }
+            }
+            
+            // Rysuj mapę
+            ctx.font = '12px Arial';
+            ctx.fillStyle = '#333';
+            
+            // Etykiety godzin
+            for (let hour = 0; hour < 24; hour++) {
+                ctx.fillText(hour.toString(), labelWidth + hour * cellWidth + 10, 15);
+            }
+            
+            // Dni i komórki
+            for (let day = 0; day < 7; day++) {
+                // Etykieta dnia
+                ctx.fillText(days[day], 10, labelHeight + day * cellHeight + 18);
+                
+                // Komórki z kosztami
+                for (let hour = 0; hour < 24; hour++) {
+                    const cost = costs[day][hour];
+                    const ratio = (cost - minCost) / (maxCost - minCost);
+                    
+                    // Gradient od zielonego do czerwonego
+                    const r = Math.round(255 * ratio);
+                    const g = Math.round(255 * (1 - ratio));
+                    ctx.fillStyle = `rgb(${r}, ${g}, 0)`;
+                    
+                    ctx.fillRect(
+                        labelWidth + hour * cellWidth,
+                        labelHeight + day * cellHeight,
+                        cellWidth - 1,
+                        cellHeight - 1
+                    );
+                    
+                    // Wartość w komórce (dla większych komórek)
+                    if (cellWidth > 40) {
+                        ctx.fillStyle = ratio > 0.5 ? 'white' : 'black';
+                        ctx.font = '10px Arial';
+                        ctx.fillText(
+                            cost.toFixed(2),
+                            labelWidth + hour * cellWidth + 2,
+                            labelHeight + day * cellHeight + 15
+                        );
+                    }
+                }
+            }
+            
+            // Legenda
+            ctx.font = '14px Arial';
+            ctx.fillStyle = '#333';
+            ctx.fillText(`Min: ${minCost.toFixed(3)} zł/kWh`, 10, canvas.height - 10);
+            ctx.fillText(`Max: ${maxCost.toFixed(3)} zł/kWh`, canvas.width - 120, canvas.height - 10);
+        }
+        
+        // Kalkulator oszczędności dla urządzeń
+        function calculateDeviceSavings() {
+            const deviceType = document.getElementById('device-select').value;
+            const frequency = document.getElementById('device-frequency').value;
+            const currentHour = parseInt(document.getElementById('current-hour').value);
+            
+            let consumption;
+            if (deviceType === 'custom') {
+                consumption = parseFloat(document.getElementById('custom-consumption').value) || 1;
+            } else {
+                consumption = devices[deviceType].consumption;
+            }
+            
+            // Oblicz koszty dla każdej taryfy w różnych godzinach
+            const savingsData = {};
+            const hours = Array.from({length: 24}, (_, i) => i);
+            
+            Object.keys(tariffs).forEach(tariffKey => {
+                savingsData[tariffKey] = {
+                    hourly: [],
+                    currentCost: 0,
+                    bestHour: 0,
+                    bestCost: Infinity
+                };
+                
+                hours.forEach(hour => {
+                    const cost = calculateHourlyCost(tariffKey, hour, 1, 6) * consumption;
+                    savingsData[tariffKey].hourly.push(cost);
+                    
+                    if (hour === currentHour) {
+                        savingsData[tariffKey].currentCost = cost;
+                    }
+                    
+                    if (cost < savingsData[tariffKey].bestCost) {
+                        savingsData[tariffKey].bestCost = cost;
+                        savingsData[tariffKey].bestHour = hour;
+                    }
+                });
+            });
+            
+            // Rysuj wykres
+            drawSavingsChart(savingsData, currentHour);
+            
+            // Pokaż szczegóły oszczędności
+            displaySavingsDetails(savingsData, consumption, frequency);
+            
+            document.getElementById('device-savings-result').style.display = 'block';
+        }
+        
+        // Wykres oszczędności
+        function drawSavingsChart(savingsData, currentHour) {
+            const ctx = document.getElementById('savingsChart').getContext('2d');
+            
+            if (window.savingsChart && typeof window.savingsChart.destroy === 'function') {
+                window.savingsChart.destroy();
+            }
+            
+            const datasets = [];
+            Object.entries(savingsData).forEach(([tariffKey, data]) => {
+                datasets.push({
+                    label: tariffs[tariffKey].name,
+                    data: data.hourly,
+                    borderColor: tariffs[tariffKey].color,
+                    backgroundColor: tariffs[tariffKey].color + '20',
+                    borderWidth: 2,
+                    pointRadius: 3
+                });
+            });
+            
+            window.savingsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 24}, (_, i) => `${i}:00`),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Koszt uruchomienia urządzenia w różnych godzinach'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Koszt [zł]'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Szczegóły oszczędności
+        function displaySavingsDetails(savingsData, consumption, frequency) {
+            const container = document.getElementById('savings-details');
+            let html = '<div class="cost-grid">';
+            
+            // Mnożnik dla częstotliwości
+            const frequencyMultiplier = {
+                daily: 30,
+                weekly: 4,
+                monthly: 1
+            };
+            
+            Object.entries(savingsData).forEach(([tariffKey, data]) => {
+                const savings = data.currentCost - data.bestCost;
+                const monthlySavings = savings * frequencyMultiplier[frequency];
+                const yearlySavings = monthlySavings * 12;
+                
+                html += `
+                    <div class="cost-item">
+                        <h4>${tariffs[tariffKey].name}</h4>
+                        <p>Obecny koszt: <strong>${data.currentCost.toFixed(2)} zł</strong></p>
+                        <p>Najlepszy czas: <strong>${data.bestHour}:00</strong></p>
+                        <p>Najniższy koszt: <strong>${data.bestCost.toFixed(2)} zł</strong></p>
+                        <p style="color: ${savings > 0 ? '#27ae60' : '#e74c3c'}">
+                            Oszczędność: <strong>${savings.toFixed(2)} zł/raz</strong>
+                        </p>
+                        <p>Miesięcznie: <strong>${monthlySavings.toFixed(2)} zł</strong></p>
+                        <p>Rocznie: <strong>${yearlySavings.toFixed(2)} zł</strong></p>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+        
+        // Analiza profilu gospodarstwa
+        function analyzeHouseholdProfile() {
+            const profileKey = document.getElementById('household-profile').value;
+            const profile = householdProfiles[profileKey];
+            
+            // Pokaż opis
+            document.getElementById('profile-description').textContent = profile.description;
+            
+            // Generuj profil zużycia
+            const monthlyUsage = profile.monthlyUsage;
+            const dailyUsage = monthlyUsage / 30;
+            
+            // Oblicz koszty dla każdej taryfy
+            const costs = {};
+            Object.keys(tariffs).forEach(tariffKey => {
+                costs[tariffKey] = {
+                    energy: 0,
+                    distribution: 0,
+                    fixed: 0,
+                    total: 0
+                };
+                
+                // Symuluj miesiąc
+                for (let day = 0; day < 30; day++) {
+                    const dayOfWeek = day % 7;
+                    
+                    profile.pattern.forEach((factor, hour) => {
+                        const hourlyUsage = dailyUsage * factor;
+                        const hourlyCost = calculateHourlyCost(tariffKey, hour, dayOfWeek, 6);
+                        
+                        costs[tariffKey].total += hourlyCost * hourlyUsage;
+                    });
+                }
+                
+                // Dodaj opłaty stałe
+                costs[tariffKey].fixed = tariffs[tariffKey].distribution.fixed + 
+                                       tariffs[tariffKey].distribution.subscription + 
+                                       tariffs[tariffKey].distribution.transition;
+                costs[tariffKey].total += costs[tariffKey].fixed;
+            });
+            
+            // Rysuj wykres
+            drawHouseholdChart(costs);
+            
+            // Pokaż koszty
+            displayHouseholdCosts(costs, profile);
+            
+            document.getElementById('household-analysis').style.display = 'block';
+        }
+        
+        // Wykres dla profilu gospodarstwa
+        function drawHouseholdChart(costs) {
+            const ctx = document.getElementById('householdChart').getContext('2d');
+            
+            if (window.householdChart && typeof window.householdChart.destroy === 'function') {
+                window.householdChart.destroy();
+            }
+            
+            const labels = [];
+            const data = [];
+            const colors = [];
+            
+            Object.entries(costs).forEach(([tariffKey, cost]) => {
+                labels.push(tariffs[tariffKey].name);
+                data.push(cost.total);
+                colors.push(tariffs[tariffKey].color);
+            });
+            
+            window.householdChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Koszt miesięczny',
+                        data: data,
+                        backgroundColor: colors.map(c => c + '80'),
+                        borderColor: colors,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Porównanie kosztów dla wybranego profilu'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Koszt miesięczny [zł]'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Wyświetl koszty gospodarstwa
+        function displayHouseholdCosts(costs, profile) {
+            const container = document.getElementById('household-costs');
+            
+            // Znajdź najtańszą taryfę
+            let minCost = Infinity;
+            let bestTariff = '';
+            
+            Object.entries(costs).forEach(([tariffKey, cost]) => {
+                if (cost.total < minCost) {
+                    minCost = cost.total;
+                    bestTariff = tariffKey;
+                }
+            });
+            
+            let html = `
+                <div class="info-box" style="background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                    <strong>Najlepsza taryfa dla tego profilu: ${tariffs[bestTariff].name}</strong><br>
+                    Miesięczny koszt: ${minCost.toFixed(2)} zł
+                </div>
+                <div class="cost-grid">
+            `;
+            
+            Object.entries(costs).forEach(([tariffKey, cost]) => {
+                const difference = cost.total - minCost;
+                const isOptimal = tariffKey === bestTariff;
+                
+                html += `
+                    <div class="cost-item" ${isOptimal ? 'style="border: 2px solid #27ae60;"' : ''}>
+                        <h4>${tariffs[tariffKey].name}</h4>
+                        <p>Miesięczny koszt: <strong>${cost.total.toFixed(2)} zł</strong></p>
+                        <p>Roczny koszt: <strong>${(cost.total * 12).toFixed(2)} zł</strong></p>
+                        ${!isOptimal ? `<p style="color: #e74c3c;">Drożej o: ${difference.toFixed(2)} zł/mies.</p>` : '<p style="color: #27ae60;">✓ Najtańsza opcja</p>'}
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
