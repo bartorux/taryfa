@@ -2639,9 +2639,22 @@
             container.innerHTML = '';
             
             if (isDualProfileMode && comparisonProfile) {
-                // Tryb porównania dwóch profili
+                // Tryb porównania dwóch profili - zmień layout na kolumnowy
+                container.style.cssText = `
+                    display: flex;
+                    flex-direction: column;
+                    gap: 15px;
+                    max-width: 100%;
+                `;
                 updateDualProfileSummary(results);
             } else {
+                // Przywróć standardowy grid layout
+                container.style.cssText = `
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 15px;
+                `;
+                
                 // Standardowy tryb - jeden profil
                 results.forEach((result, index) => {
                     const card = document.createElement('div');
@@ -2774,40 +2787,49 @@
                         ${resultA.id} - ${resultA.name}
                     </div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; align-items: center;">
+                    <div style="display: grid; grid-template-columns: 1fr 80px 1fr; gap: 20px; align-items: center; margin: 20px 0;">
                         <div style="
                             text-align: center; 
-                            padding: 12px; 
-                            border-radius: 8px; 
+                            padding: 15px; 
+                            border-radius: 12px; 
                             background: ${profileABetter ? 'var(--success)' : profileBBetter ? 'rgba(220, 53, 69, 0.1)' : 'var(--secondary)'};
                             color: ${profileABetter ? 'white' : profileBBetter ? 'var(--danger)' : 'var(--text-primary)'};
                             font-weight: bold;
-                            border: 2px solid ${profileABetter ? 'var(--success)' : 'transparent'};
+                            border: 3px solid ${profileABetter ? 'var(--success)' : 'transparent'};
+                            min-height: 100px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
                         ">
-                            <div style="font-size: 0.9rem; margin-bottom: 5px;">A: ${mainProfileName}</div>
-                            <div style="font-size: 1.3rem;">${resultA.totalCost.toFixed(2)} zł</div>
-                            ${profileABetter ? '<div style="font-size: 0.8rem; margin-top: 5px;">🏆 LEPSZY</div>' : ''}
+                            <div style="font-size: 1rem; margin-bottom: 8px; opacity: 0.9;">A: ${mainProfileName}</div>
+                            <div style="font-size: 1.6rem; font-weight: 900;">${resultA.totalCost.toFixed(2)} zł</div>
+                            ${profileABetter ? '<div style="font-size: 0.9rem; margin-top: 8px;">🏆 LEPSZY</div>' : ''}
                         </div>
                         
                         <div style="
-                            font-size: 2rem; 
+                            font-size: 2.5rem; 
                             font-weight: 900; 
                             color: var(--primary);
                             text-align: center;
+                            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
                         ">VS</div>
                         
                         <div style="
                             text-align: center; 
-                            padding: 12px; 
-                            border-radius: 8px; 
+                            padding: 15px; 
+                            border-radius: 12px; 
                             background: ${profileBBetter ? 'var(--success)' : profileABetter ? 'rgba(220, 53, 69, 0.1)' : 'var(--secondary)'};
                             color: ${profileBBetter ? 'white' : profileABetter ? 'var(--danger)' : 'var(--text-primary)'};
                             font-weight: bold;
-                            border: 2px solid ${profileBBetter ? 'var(--success)' : 'transparent'};
+                            border: 3px solid ${profileBBetter ? 'var(--success)' : 'transparent'};
+                            min-height: 100px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
                         ">
-                            <div style="font-size: 0.9rem; margin-bottom: 5px;">B: ${comparisonProfileName}</div>
-                            <div style="font-size: 1.3rem;">${resultB.totalCost.toFixed(2)} zł</div>
-                            ${profileBBetter ? '<div style="font-size: 0.8rem; margin-top: 5px;">🏆 LEPSZY</div>' : ''}
+                            <div style="font-size: 1rem; margin-bottom: 8px; opacity: 0.9;">B: ${comparisonProfileName}</div>
+                            <div style="font-size: 1.6rem; font-weight: 900;">${resultB.totalCost.toFixed(2)} zł</div>
+                            ${profileBBetter ? '<div style="font-size: 0.9rem; margin-top: 8px;">🏆 LEPSZY</div>' : ''}
                         </div>
                     </div>
                     
@@ -3919,7 +3941,18 @@
             // Znajdź nazwę profilu na podstawie jego danych
             for (const [name, data] of Object.entries(usageProfiles)) {
                 if (JSON.stringify(data) === JSON.stringify(profile)) {
-                    return `Wzorzec: ${name}`;
+                    // Tłumaczenie nazw profili na polskie
+                    const polishNames = {
+                        'standard': 'Standard',
+                        'morning': 'Poranny', 
+                        'evening': 'Wieczorny',
+                        'night': 'Nocny',
+                        'flexible': 'Elastyczny',
+                        'homeoffice': 'Home Office',
+                        'ev_charging': 'Ładowanie EV',
+                        'heat_pump': 'Pompa ciepła'
+                    };
+                    return polishNames[name] || name;
                 }
             }
             
