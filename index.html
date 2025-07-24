@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator taryf energii</title>
+    <title>Kalkulator taryf energii - rzeczywiste ceny ENTSO-E (v14 - finalna)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -913,69 +913,66 @@
             }
         }
         
-        /* Ultra Modern Tooltips & Icons */
+        /* Prosty tooltip system */
         .tooltip {
             position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             cursor: help;
-            width: 24px;
-            height: 24px;
-            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+            width: 20px;
+            height: 20px;
+            background: #4f46e5;
             border-radius: 50%;
             color: white;
             font-size: 12px;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4);
+            margin-left: 8px;
         }
         
         .tooltip:hover {
-            transform: scale(1.1);
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+            background: #3730a3;
         }
         
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 250px;
-            background: var(--card-bg);
-            color: var(--text-primary);
-            text-align: center;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            border: 1px solid var(--bg-tertiary);
-            padding: 16px;
-            position: absolute;
-            z-index: 1000;
-            bottom: 145%;
+        /* Tooltip dla każdego pola osobno */
+        .tooltip[data-tip="analysis"] .tooltiptext {
+            content: "📊 Wybierz typ analizy: dzienna dla jednego dnia, tygodniowa dla porównania dni tygodnia";
+        }
+        
+        .tooltip[data-tip="eur"] .tooltiptext {
+            content: "💱 Kurs EUR/PLN - możesz edytować ręcznie lub będzie pobierany automatycznie";
+        }
+        
+        .tooltip[data-tip="margin"] .tooltiptext {
+            content: "💰 Dodatkowa marża którą doliczasz do ceny spot dla taryfy G11f (podaj w zł/kWh)";
+        }
+        
+        .tooltip::after {
+            content: attr(data-content);
+            position: fixed;
+            top: 150px;
             left: 50%;
-            margin-left: -125px;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(15px) scale(0.9);
-            backdrop-filter: blur(20px);
+            transform: translateX(-50%);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.95);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
             font-size: 14px;
-            font-weight: 500;
+            text-align: center;
+            z-index: 999999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
         
-        .tooltip .tooltiptext::before {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -10px;
-            border-width: 10px;
-            border-style: solid;
-            border-color: var(--card-bg) transparent transparent transparent;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
+        .tooltip:hover::after {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            visibility: visible;
         }
+        
         
         /* Seasonal profiles */
         .seasonal-info {
@@ -1331,9 +1328,7 @@
                 <div class="input-group">
                     <label for="analysis-type">
                         Typ analizy:
-                        <span class="tooltip">i
-                            <span class="tooltiptext">📊 Wybierz typ analizy: dzienna dla jednego dnia, tygodniowa dla porównania dni tygodnia</span>
-                        </span>
+                        <span class="tooltip" data-content="📊 Wybierz typ analizy: dzienna dla jednego dnia, tygodniowa dla porównania dni tygodnia">i</span>
                     </label>
                     <select id="analysis-type">
                         <option value="single-day">Pojedynczy dzień</option>
@@ -1357,9 +1352,7 @@
                 <div class="input-group">
                     <label for="eur-pln-rate">
                         Kurs EUR/PLN:
-                        <span class="tooltip">i
-                            <span class="tooltiptext">💱 Kurs EUR/PLN - możesz edytować ręcznie lub będzie pobierany automatycznie</span>
-                        </span>
+                        <span class="tooltip" data-content="💱 Kurs EUR/PLN - możesz edytować ręcznie lub będzie pobierany automatycznie">i</span>
                     </label>
                     <input type="number" id="eur-pln-rate" value="4.30" step="0.01" min="3" max="6">
                     <small style="display: block; margin-top: 5px; color: var(--success); font-size: 0.8rem;">
@@ -1369,9 +1362,7 @@
                 <div class="input-group">
                     <label for="g11f-margin">
                         Marża G11f (zł/kWh):
-                        <span class="tooltip">i
-                            <span class="tooltiptext">💰 Dodatkowa marża którą doliczasz do ceny spot dla taryfy G11f (podaj w zł/kWh)</span>
-                        </span>
+                        <span class="tooltip" data-content="💰 Dodatkowa marża którą doliczasz do ceny spot dla taryfy G11f (podaj w zł/kWh)">i</span>
                     </label>
                     <input type="number" id="g11f-margin" value="0.05" step="0.001" min="0" max="0.2">
                     <small style="display: block; margin-top: 5px; color: var(--text-secondary); font-size: 0.8rem; height: 20px;">
@@ -1939,6 +1930,7 @@
                     });
                 }, 1000);
             }, 500);
+            
             
             try {
                 // Ustaw bezpieczną datę (ENTSO-E ma opóźnienie ~1-2 dni)
@@ -4458,6 +4450,7 @@
                 }
             }, 2000);
         });
+        
     </script>
 </body>
 </html>
