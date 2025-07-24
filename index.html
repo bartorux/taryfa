@@ -744,6 +744,230 @@
             padding: 20px;
         }
         
+        /* New profile editor styles */
+        .profile-visualizer {
+            margin-bottom: 20px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .hour-sliders-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .hour-slider-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .hour-label {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-secondary);
+        }
+        
+        .hour-slider {
+            width: 100%;
+            height: 80px;
+            writing-mode: bt-lr; /* IE */
+            writing-mode: vertical-lr; /* Firefox */
+            -webkit-appearance: slider-vertical; /* WebKit */
+            background: linear-gradient(to top, #27ae60, #f39c12, #e74c3c);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .hour-input-small {
+            width: 50px;
+            padding: 3px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.7rem;
+        }
+        
+        .hour-percentage {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .hour-sliders-grid {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 10px;
+            }
+            
+            .hour-slider {
+                height: 60px;
+            }
+        }
+        
+        /* Profile manager styles */
+        .profiles-manager {
+            margin-top: 20px;
+            background: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .saved-profiles-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .saved-profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+        
+        .profile-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+        
+        .profile-actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .profile-actions button {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+        
+        /* Profile comparison styles */
+        .comparison-results {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .comparison-table th {
+            background: var(--bg-secondary);
+            font-weight: bold;
+        }
+        
+        .savings-positive {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .savings-negative {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        /* Dual profile styles */
+        .dual-profile-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .profile-column {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .profile-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+        
+        .profile-select:focus {
+            outline: none;
+            border-color: var(--info);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .dual-profile-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
+        /* Dual profile summary styles */
+        .dual-profile-card {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+        
+        .dual-comparison {
+            text-align: center;
+        }
+        
+        .tariff-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .cost-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        
+        .cost-a, .cost-b {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .savings-indicator {
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--bg-tertiary);
+        }
+        
         .day-tabs {
             display: flex;
             gap: 5px;
@@ -825,7 +1049,7 @@
         </div>
         
         <div class="api-status glass-card" id="api-status">
-            <strong>🔌 API ENTSO-E:</strong> Kliknij "Pobierz ceny spot" aby pobrać rzeczywiste ceny energii z ENTSO-E Transparency Platform<br>
+            <strong>🔌 API ENTSO-E:</strong> Rzeczywiste ceny energii z ENTSO-E Transparency Platform<br>
             <small>💡 <strong>Ważne:</strong> ENTSO-E ma dane tylko z przeszłości (maksymalnie do wczoraj)</small>
         </div>
         
@@ -867,9 +1091,9 @@
                         </span>
                     </label>
                     <input type="number" id="eur-pln-rate" value="4.30" step="0.01" min="3" max="6">
-                    <button class="fetch-btn" onclick="updateExchangeRate()" style="margin-top: 5px; padding: 6px 12px; font-size: 0.8rem;">
-                        💱 Zaktualizuj kurs EUR/PLN
-                    </button>
+                    <small style="display: block; margin-top: 5px; color: var(--success); font-size: 0.8rem;">
+                        💱 Kurs aktualizuje się automatycznie przy ładowaniu strony
+                    </small>
                 </div>
                 <div class="input-group">
                     <label for="g11f-margin">
@@ -882,12 +1106,14 @@
                 </div>
                 <div class="input-group">
                     <label>&nbsp;</label>
-                    <button class="fetch-btn" onclick="fetchSpotPrices()">
-                        📊 Pobierz ceny spot
-                    </button>
-                    <label class="auto-fetch" style="margin-top: 10px;">
-                        <input type="checkbox" id="auto-fetch" checked> Auto-odświeżanie
-                    </label>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button class="fetch-btn" onclick="handleFetchSpotPrices()" style="flex: 1;">
+                            📊 Pobierz ceny spot
+                        </button>
+                        <label class="auto-fetch" style="font-size: 0.9rem;">
+                            <input type="checkbox" id="auto-fetch" checked> Auto-odświeżanie
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="price-preview" id="price-preview" style="display: none;">
@@ -940,31 +1166,45 @@
             </div>
             
             <div class="profile-section">
-                <h4>📈 Profile zużycia energii</h4>
+                <h4>📈 Profile zużycia energii - Porównanie</h4>
                 <div class="seasonal-info" id="seasonal-info" style="display: none;">
                     Profil dostosowany do sezonu: <strong id="current-season">Cały rok</strong>
                 </div>
-                <div class="profile-grid">
-                    <div class="profile-btn active" onclick="setUsageProfile('standard', this)">
-                        🏠 Standard<br><small>Równomierne zużycie</small>
+                
+                <div class="dual-profile-container">
+                    <div class="profile-column">
+                        <h5 style="color: var(--success); margin-bottom: 10px;">📊 Profil A (główny)</h5>
+                        <select id="main-profile-select" class="profile-select" onchange="setMainProfile(this.value)">
+                            <option value="standard">🏠 Standard - Równomierne</option>
+                            <option value="morning">🌅 Poranny - Pik 6-9, 17-21</option>
+                            <option value="evening">🌆 Wieczorny - Pik 18-23</option>
+                            <option value="night">🌙 Nocny - Pik 22-6</option>
+                            <option value="flexible">🔄 Elastyczny G12</option>
+                            <option value="flexibleW">🔄 Elastyczny G12w</option>
+                            <option value="homeoffice">💻 Home Office</option>
+                            <option value="ev_charging">⚡ Ładowanie EV</option>
+                            <option value="heat_pump">🔥 Pompa ciepła</option>
+                        </select>
                     </div>
-                    <div class="profile-btn" onclick="setUsageProfile('morning', this)">
-                        🌅 Poranny<br><small>Pik 6-9, 17-21</small>
-                    </div>
-                    <div class="profile-btn" onclick="setUsageProfile('evening', this)">
-                        🌆 Wieczorny<br><small>Pik 18-23</small>
-                    </div>
-                    <div class="profile-btn" onclick="setUsageProfile('night', this)">
-                        🌙 Nocny<br><small>Pik 22-6</small>
-                    </div>
-                    <div class="profile-btn" onclick="setUsageProfile('flexible', this)">
-                        🔄 Elastyczny G12<br><small>Dostosowany do G12</small>
-                    </div>
-                    <div class="profile-btn" onclick="setUsageProfile('flexibleW', this)">
-                        🔄 Elastyczny G12w<br><small>Weekend + noce</small>
-                    </div>
-                    <div class="profile-btn" onclick="setUsageProfile('homeoffice', this)">
-                        💻 Home Office<br><small>Równomierne 8-18</small>
+                    
+                    <div class="profile-column">
+                        <h5 style="color: var(--info); margin-bottom: 10px;">📈 Profil B (porównanie)</h5>
+                        <select id="comparison-profile-select" class="profile-select" onchange="setComparisonProfile(this.value)">
+                            <option value="">-- Wybierz do porównania --</option>
+                            <option value="standard">🏠 Standard - Równomierne</option>
+                            <option value="morning">🌅 Poranny - Pik 6-9, 17-21</option>
+                            <option value="evening">🌆 Wieczorny - Pik 18-23</option>
+                            <option value="night">🌙 Nocny - Pik 22-6</option>
+                            <option value="flexible">🔄 Elastyczny G12</option>
+                            <option value="flexibleW">🔄 Elastyczny G12w</option>
+                            <option value="homeoffice">💻 Home Office</option>
+                            <option value="ev_charging">⚡ Ładowanie EV</option>
+                            <option value="heat_pump">🔥 Pompa ciepła</option>
+                        </select>
+                        <div style="margin-top: 8px;">
+                            <input type="checkbox" id="enable-comparison" onchange="toggleDualProfileMode()" />
+                            <label for="enable-comparison" style="margin-left: 5px; font-size: 0.9rem;">Włącz porównanie</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1090,6 +1330,39 @@
                             <button class="fetch-btn" style="background: var(--warning);" onclick="resetCurrentDay()">🔄 Reset dnia</button>
                             <button class="fetch-btn" style="background: #9b59b6;" onclick="copyToAllDays()">📋 Kopiuj na wszystkie dni</button>
                             <button class="fetch-btn" onclick="saveCustomProfile()">💾 Zapisz profil</button>
+                            <button class="fetch-btn" onclick="toggleProfilesManager()">📚 Zarządzaj profilami</button>
+                            <button class="fetch-btn" style="background: var(--info);" onclick="toggleProfileComparison()">⚖️ Porównaj profile</button>
+                        </div>
+                        
+                        <!-- Sekcja zarządzania profilami -->
+                        <div id="profiles-manager" class="profiles-manager" style="display: none;">
+                            <h4 style="margin: 20px 0 15px 0;">📚 Zapisane profile zużycia</h4>
+                            <div id="saved-profiles-list" class="saved-profiles-list">
+                                <!-- Wypełniane dynamicznie -->
+                            </div>
+                        </div>
+                        
+                        <!-- Sekcja porównania profili -->
+                        <div id="profile-comparison" class="profiles-manager" style="display: none;">
+                            <h4 style="margin: 20px 0 15px 0;">⚖️ Porównanie profili zużycia</h4>
+                            <div class="comparison-controls" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div class="comparison-profile">
+                                    <label><strong>Profil A (obecny):</strong></label>
+                                    <select id="profile-a-select" style="width: 100%; padding: 8px; margin-top: 5px;">
+                                        <option value="current">Aktualny profil</option>
+                                    </select>
+                                </div>
+                                <div class="comparison-profile">
+                                    <label><strong>Profil B (do porównania):</strong></label>
+                                    <select id="profile-b-select" style="width: 100%; padding: 8px; margin-top: 5px;" onchange="setComparisonProfile(this.value)">
+                                        <option value="">Wybierz profil...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button onclick="compareProfiles()" class="fetch-btn" style="width: 100%; margin-bottom: 20px;">📊 Porównaj koszty</button>
+                            <div id="comparison-results" class="comparison-results">
+                                <!-- Wypełniane dynamicznie -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1341,6 +1614,8 @@
         };
         
         let currentProfile = [...usageProfiles.standard];
+        let comparisonProfile = null; // Profil do porównania
+        let isDualProfileMode = false; // Czy włączony tryb porównania
         let weeklyProfiles = {
             monday: [...usageProfiles.standard],
             tuesday: [...usageProfiles.standard],
@@ -1373,10 +1648,28 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Aplikacja startuje...');
             
+            // Inicjalizuj wykresy z pustymi danymi
+            setTimeout(() => {
+                console.log('🎯 Inicjalizacja początkowych wykresów...');
+                createCharts();
+                // Uruchom obliczenia kosztów
+                calculateCostsAndUpdate();
+                // Załaduj profile do porównania
+                updateComparisonProfiles();
+                console.log('🔄 Profile comparison loaded');
+                
+                // Pobierz aktualny kurs EUR automatycznie
+                setTimeout(() => {
+                    fetchEuroRate().catch(error => {
+                        console.warn('Nie udało się pobrać kursu EUR automatycznie:', error);
+                    });
+                }, 1000);
+            }, 500);
+            
             try {
-                // Ustaw wczorajszą datę (ENTSO-E ma opóźnienie ~1 dzień)
-                const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-                const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+                // Ustaw bezpieczną datę (ENTSO-E ma opóźnienie ~1-2 dni)
+                const yesterday = new Date(Date.now() - 2 * 86400000).toISOString().split('T')[0]; // 2 dni temu dla pewności
+                const weekAgo = new Date(Date.now() - 9 * 86400000).toISOString().split('T')[0]; // 9 dni temu
                 
                 // Ustaw maksymalną datę na wczoraj dla wszystkich pól dat
                 const dateSelect = document.getElementById('date-select');
@@ -1589,8 +1882,9 @@
                     
                     // Sprawdź czy data nie jest z przyszłości
                     const selectedDate = new Date(singleDate);
-                    if (selectedDate >= today) {
-                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nNajnowsze dostępne dane to z wczoraj. Wybierz wcześniejszą datę.');
+                    const safeDate = new Date(Date.now() - 2 * 86400000); // 2 dni temu dla pewności
+                    if (selectedDate >= safeDate) {
+                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nNajnowsze dostępne dane to sprzed 2-3 dni. Wybierz wcześniejszą datę.');
                         return;
                     }
                     
@@ -1616,25 +1910,39 @@
                     break;
                     
                 case 'week-analysis':
-                    const weekDate = document.getElementById('date-select').value;
-                    if (!weekDate) {
-                        alert('Wybierz datę dla analizy tygodniowej');
-                        return;
-                    }
+                    // Automatycznie ustaw pełny poprzedni tydzień (poniedziałek-niedziela)
+                    // ENTSO-E ma dane z opóźnieniem ~1-2 dni, więc użyjmy wczoraj jako najnowszą dostępną datę
+                    const yesterday = new Date(Date.now() - 86400000); // wczoraj
+                    const dayOfWeek = yesterday.getDay(); // 0=niedziela, 1=poniedziałek...
                     
-                    const weekDateObj = new Date(weekDate);
-                    if (weekDateObj >= yesterday) {
-                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nWybierz datę z wcześniejszego tygodnia.');
-                        return;
-                    }
+                    // Znajdź niedzielę poprzedniego tygodnia
+                    const daysToLastSunday = dayOfWeek === 0 ? 7 : dayOfWeek; // Jak daleko do końca poprzedniego tygodnia
+                    const lastSunday = new Date(yesterday);
+                    lastSunday.setDate(yesterday.getDate() - daysToLastSunday);
                     
-                    const weekStart = new Date(weekDate);
-                    weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Poniedziałek
-                    const weekEnd = new Date(weekStart);
-                    weekEnd.setDate(weekEnd.getDate() + 6); // Niedziela
+                    // Ustaw pełny poprzedni tydzień (poniedziałek-niedziela)
+                    const weekStart = new Date(lastSunday);
+                    weekStart.setDate(lastSunday.getDate() - 6); // Poniedziałek poprzedniego tygodnia
+                    
+                    const weekEnd = new Date(lastSunday); // Niedziela poprzedniego tygodnia
+                    
+                    console.log(`📅 Analiza tygodniowa: ${weekStart.toISOString().split('T')[0]} - ${weekEnd.toISOString().split('T')[0]}`);
+                    
+                    // Sprawdź czy daty są w przeszłości względem wczoraj
+                    const dayBeforeYesterday = new Date(Date.now() - 2 * 86400000);
+                    if (weekEnd > dayBeforeYesterday) {
+                        console.log('⚠️ Przesuwam tydzień dalej w przeszłość dla pewności dostępności danych ENTSO-E');
+                        // Przesuń o kolejny tydzień w tył dla pewności
+                        weekStart.setDate(weekStart.getDate() - 7);
+                        weekEnd.setDate(weekEnd.getDate() - 7);
+                    }
                     
                     startDate = weekStart.toISOString().split('T')[0];
                     endDate = weekEnd.toISOString().split('T')[0];
+                    
+                    // Pokaż użytkownikowi wybrane daty
+                    statusDiv.innerHTML = `<strong>📅 Analiza tygodniowa:</strong> Automatycznie wybrany poprzedni pełny tydzień: ${startDate} - ${endDate}`;
+                    
                     break;
                     
                 case 'month-analysis':
@@ -1644,13 +1952,25 @@
                         return;
                     }
                     
-                    if (monthDate >= yesterday) {
-                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nWybierz datę z wcześniejszego miesiąca.');
+                    const safeDateMonth = new Date(Date.now() - 2 * 86400000); // 2 dni temu dla pewności
+                    if (monthDate >= safeDateMonth) {
+                        alert('❌ ENTSO-E API ma dane tylko z przeszłości!\n\nNajnowsze dostępne dane to sprzed 2-3 dni. Wybierz wcześniejszą datę.');
                         return;
                     }
                     
                     startDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1).toISOString().split('T')[0];
                     endDate = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).toISOString().split('T')[0];
+                    
+                    // Sprawdź czy końcowa data miesiąca nie jest zbyt świeża
+                    const endDateObjMonth = new Date(endDate);
+                    if (endDateObjMonth >= safeDateMonth) {
+                        alert('❌ Wybrany miesiąc zawiera zbyt świeże daty!\n\nWybierz miesiąc, który zakończył się co najmniej 3 dni temu.');
+                        return;
+                    }
+                    
+                    console.log(`📅 Analiza miesięczna: ${startDate} - ${endDate}`);
+                    statusDiv.innerHTML = `<strong>📅 Analiza miesięczna:</strong> ${startDate} - ${endDate}`;
+                    
                     break;
             }
             
@@ -1691,6 +2011,51 @@
             // Reset UI
             btn.disabled = false;
             btn.innerHTML = '📊 Pobierz ceny spot';
+        }
+        
+        // Wrapper function for onclick handlers  
+        function handleFetchSpotPrices() {
+            fetchSpotPrices().catch(error => {
+                console.error('Błąd podczas pobierania cen spot:', error);
+            });
+        }
+        
+        // Funkcja generująca przykładowe dane gdy API nie działa
+        function generateSamplePrices(date) {
+            console.log(`📊 Generowanie przykładowych danych dla ${date}`);
+            const prices = [];
+            
+            // Typowy profil cenowy z Polski (ceny w €/MWh)
+            const baseProfile = [
+                45, 42, 40, 38, 37, 39, 45, 55,  // 0-7
+                65, 62, 58, 56, 54, 52, 50, 48,  // 8-15
+                52, 58, 68, 72, 70, 65, 58, 50   // 16-23
+            ];
+            
+            // Dodaj losową zmienność ±20%
+            for (let i = 0; i < 24; i++) {
+                const variation = 0.8 + Math.random() * 0.4; // 0.8 do 1.2
+                prices[i] = baseProfile[i] * variation;
+            }
+            
+            spotPrices = prices;
+            console.log('✅ Wygenerowano przykładowe dane:', {
+                data: date,
+                min: Math.min(...prices).toFixed(2) + ' €/MWh',
+                max: Math.max(...prices).toFixed(2) + ' €/MWh',
+                średnia: (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2) + ' €/MWh'
+            });
+            
+            // Pokaż ostrzeżenie użytkownikowi
+            const statusDiv = document.getElementById('api-status');
+            if (statusDiv) {
+                statusDiv.className = 'api-status glass-card warning';
+                statusDiv.innerHTML = `<strong>⚠️ Uwaga:</strong> Używam przykładowych danych cenowych, ponieważ API ENTSO-E jest obecnie niedostępne. 
+                    Dane są oparte na typowym profilu cenowym dla Polski.<br>
+                    <small>💡 Spróbuj ponownie później lub skontaktuj się z administratorem.</small>`;
+            }
+            
+            return prices;
         }
         
         async function fetchSingleDayPrices(date) {
@@ -1782,14 +2147,17 @@
             }
             
             if (!xmlText) {
-                throw new Error(`Wszystkie proxy CORS nie działają. Ostatni błąd: ${lastError?.message}`);
+                console.warn('❌ Wszystkie proxy CORS nie działają. Używam przykładowych danych...');
+                // Użyj przykładowych danych jako fallback
+                return generateSamplePrices(date);
             }
             
             // Parsuj XML z ENTSO-E
             const prices = parseENTSOEXML(xmlText);
             
-            if (prices.length === 0) {
-                throw new Error('Brak danych cenowych w odpowiedzi ENTSO-E lub błąd parsowania XML');
+            if (!prices || prices.length === 0) {
+                console.warn('❌ Błąd parsowania danych ENTSO-E, używam przykładowych danych');
+                return generateSamplePrices(date);
             }
             
             // Sprawdź czy mamy 24 godziny
@@ -1862,7 +2230,12 @@
         
         function parseENTSOEXML(xmlText) {
             try {
-                console.log('Parsowanie XML z ENTSO-E...');
+                console.log('🔍 Parsowanie XML z ENTSO-E...');
+                
+                if (!xmlText || xmlText.trim().length === 0) {
+                    console.error('❌ Pusty XML od ENTSO-E');
+                    return null;
+                }
                 
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
@@ -2079,7 +2452,16 @@
             try {
                 const monthlyUsage = parseFloat(document.getElementById('monthly-usage').value) || 300;
                 const annualUsage = parseFloat(document.getElementById('annual-usage').value) || 3600;
-                const installationType = document.getElementById('installation-type').value;
+                const installationTypeElement = document.getElementById('installation-type');
+                const installationType = installationTypeElement ? installationTypeElement.value : '3-phase';
+                
+                console.log('🔍 Debug calculateCostsAndUpdate:', {
+                    monthlyUsage,
+                    annualUsage,
+                    installationType,
+                    currentProfile: currentProfile.length,
+                    tariffsCount: Object.keys(tariffs).length
+                });
                 
                 const results = [];
                 
@@ -2087,6 +2469,7 @@
                 Object.entries(tariffs).forEach(([id, tariff]) => {
                     try {
                         const cost = calculateTariffCost(id, monthlyUsage, annualUsage, installationType);
+                        console.log(`💰 Koszt dla ${id}:`, cost);
                         if (cost !== null) {
                             results.push({
                                 id: id,
@@ -2098,21 +2481,28 @@
                             });
                         }
                     } catch (error) {
-                        console.error(`Błąd obliczania kosztu dla taryfy ${id}:`, error);
+                        console.error(`❌ Błąd obliczania kosztu dla taryfy ${id}:`, error);
                     }
                 });
                 
                 // Sortuj po kosztach
                 results.sort((a, b) => a.totalCost - b.totalCost);
                 
+                console.log('📊 Wyniki obliczeń:', results.length, 'taryf');
+                console.log('📋 Lista wyników:', results);
+                
                 // Aktualizuj podsumowanie miesięczne
                 updateCostSummary(results);
+                console.log('✅ updateCostSummary wywołane');
                 
                 // Aktualizuj podsumowanie dzienne
                 updateDailyCostSummary(results);
                 
                 // Aktualizuj wykresy
-                createCharts();
+                setTimeout(() => {
+                    createCharts();
+                    console.log('📊 Wykresy utworzone po załadowaniu danych');
+                }, 100);
                 
                 // Renderuj taryfy godzinowe
                 renderHourlyTariffs();
@@ -2125,7 +2515,17 @@
         function calculateTariffCost(tariffId, monthlyUsage, annualUsage, installationType) {
             try {
                 const tariff = tariffs[tariffId];
-                if (!tariff) return null;
+                if (!tariff) {
+                    console.error(`❌ Nie znaleziono taryfy: ${tariffId}`);
+                    return null;
+                }
+                
+                console.log(`🔍 Obliczam koszt dla ${tariffId}:`, {
+                    monthlyUsage,
+                    annualUsage,
+                    installationType,
+                    tariffType: tariff.type
+                });
                 
                 const installKey = installationType === "1-phase" ? "1-phase" : "3-phase";
                 
@@ -2224,27 +2624,212 @@
         
         function updateCostSummary(results) {
             const container = document.getElementById('cost-summary');
-            if (!container) return;
+            console.log('🔍 updateCostSummary:', {
+                containerFound: !!container,
+                resultsCount: results.length,
+                isDualProfileMode,
+                hasComparisonProfile: !!comparisonProfile
+            });
+            
+            if (!container) {
+                console.error('❌ Nie znaleziono kontenera cost-summary');
+                return;
+            }
             
             container.innerHTML = '';
             
-            results.forEach((result, index) => {
+            if (isDualProfileMode && comparisonProfile) {
+                // Tryb porównania dwóch profili
+                updateDualProfileSummary(results);
+            } else {
+                // Standardowy tryb - jeden profil
+                results.forEach((result, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'summary-card' + (index === 0 ? ' best' : '');
+                    
+                    const difference = index === 0 ? 'NAJTAŃSZA' : 
+                        `+${(result.totalCost - results[0].totalCost).toFixed(2)} zł`;
+                    const differenceClass = index === 0 ? 'savings' : 'loss';
+                    
+                    card.innerHTML = `
+                        <div class="summary-value">${result.totalCost.toFixed(2)} zł</div>
+                        <div class="summary-label">${result.id}</div>
+                        <div class="summary-label">${result.name}</div>
+                        <div class="${differenceClass}" style="margin-top: 5px; font-weight: bold; color: ${index === 0 ? 'white' : 'var(--danger)'};">${difference}</div>
+                    `;
+                    
+                    container.appendChild(card);
+                });
+            }
+        }
+        
+        function updateDualProfileSummary(resultsA) {
+            const container = document.getElementById('cost-summary');
+            
+            // Oblicz koszty dla profilu B
+            const monthlyUsage = parseFloat(document.getElementById('monthly-usage').value) || 300;
+            const annualUsage = parseFloat(document.getElementById('annual-usage').value) || 3600;
+            const installationTypeElement = document.getElementById('installation-type');
+            const installationType = installationTypeElement ? installationTypeElement.value : '3-phase';
+            
+            const resultsB = calculateAllTariffCosts(comparisonProfile, monthlyUsage, annualUsage, installationType);
+            
+            console.log('🔍 updateDualProfileSummary debug:', {
+                resultsACount: resultsA.length,
+                resultsBCount: resultsB.length,
+                comparisonProfile: comparisonProfile?.slice(0, 3),
+                currentProfile: currentProfile?.slice(0, 3),
+                monthlyUsage,
+                annualUsage,
+                installationType
+            });
+            
+            if (!resultsB || resultsB.length === 0) {
+                console.error('❌ Brak wyników dla profilu B');
+                container.innerHTML = '<div style="text-align: center; padding: 20px;">❌ Błąd obliczania kosztów dla profilu B</div>';
+                return;
+            }
+            
+            // Pobierz nazwy profili
+            const mainProfileName = getProfileDisplayName(currentProfile);
+            const comparisonProfileName = getProfileDisplayName(comparisonProfile);
+            
+            // Nagłówek porównania - większy, bardziej widoczny
+            const header = document.createElement('div');
+            header.style.cssText = `
+                grid-column: 1/-1; 
+                text-align: center; 
+                margin-bottom: 20px; 
+                padding: 15px; 
+                background: linear-gradient(135deg, var(--success), var(--info)); 
+                border-radius: 10px; 
+                color: white; 
+                font-weight: bold;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            `;
+            header.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; align-items: center;">
+                    <div style="font-size: 1.1rem;">
+                        📊 ${mainProfileName}
+                    </div>
+                    <div style="
+                        font-size: 1.8rem; 
+                        font-weight: 900; 
+                        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                        border: 3px solid white;
+                        padding: 5px 15px;
+                        border-radius: 50px;
+                        background: rgba(255,255,255,0.2);
+                    ">VS</div>
+                    <div style="font-size: 1.1rem;">
+                        📈 ${comparisonProfileName}
+                    </div>
+                </div>
+            `;
+            container.appendChild(header);
+            
+            // Porównanie taryf - lepszy layout
+            console.log('🔍 Rozpoczynam pętlę porównania, resultsA.slice(0, 5):', resultsA.slice(0, 5));
+            console.log('🔍 Struktura resultsA[0]:', resultsA[0]);
+            console.log('🔍 Struktura resultsB[0]:', resultsB[0]);
+            console.log('🔍 Wszystkie ID w resultsA:', resultsA.map(r => r.id));
+            console.log('🔍 Wszystkie ID w resultsB:', resultsB.map(r => r.id));
+            console.log('🔍 JSON resultsA[0]:', JSON.stringify(resultsA[0], null, 2));
+            console.log('🔍 JSON resultsB[0]:', JSON.stringify(resultsB[0], null, 2));
+            
+            resultsA.slice(0, 5).forEach((resultA, index) => {
+                console.log(`🔍 Przetwarzam taryfę ${index}: ${resultA.id}`);
+                const resultB = resultsB.find(r => r.id === resultA.id);
+                if (!resultB) {
+                    console.log(`❌ Nie znaleziono resultB dla ${resultA.id}`);
+                    return;
+                }
+                console.log(`✅ Znaleziono resultB dla ${resultA.id}:`, resultB);
+                
                 const card = document.createElement('div');
-                card.className = 'summary-card' + (index === 0 ? ' best' : '');
-                
-                const difference = index === 0 ? 'NAJTAŃSZA' : 
-                    `+${(result.totalCost - results[0].totalCost).toFixed(2)} zł`;
-                const differenceClass = index === 0 ? 'savings' : 'loss';
-                
-                card.innerHTML = `
-                    <div class="summary-value">${result.totalCost.toFixed(2)} zł</div>
-                    <div class="summary-label">${result.id}</div>
-                    <div class="summary-label">${result.name}</div>
-                    <div class="${differenceClass}" style="margin-top: 5px; font-weight: bold; color: ${index === 0 ? 'white' : 'var(--danger)'};">${difference}</div>
+                card.className = 'summary-card dual-profile-card';
+                card.style.cssText = `
+                    padding: 20px;
+                    margin-bottom: 15px;
+                    border-radius: 12px;
+                    background: var(--card-bg);
+                    border: 2px solid var(--border);
+                    width: 100%;
+                    max-width: none;
+                    min-width: 400px;
+                    box-sizing: border-box;
                 `;
                 
+                const difference = resultA.totalCost - resultB.totalCost;
+                const betterProfile = difference > 0 ? 'B' : difference < 0 ? 'A' : 'równe';
+                const savingsAmount = Math.abs(difference);
+                
+                // Określ kolory na podstawie który profil jest lepszy
+                const profileABetter = difference < 0;
+                const profileBBetter = difference > 0;
+                const isEqual = difference === 0;
+                
+                card.innerHTML = `
+                    <div class="tariff-name" style="text-align: center; font-weight: bold; margin-bottom: 15px; color: var(--text-primary);">
+                        ${resultA.id} - ${resultA.name}
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 15px; align-items: center;">
+                        <div style="
+                            text-align: center; 
+                            padding: 12px; 
+                            border-radius: 8px; 
+                            background: ${profileABetter ? 'var(--success)' : profileBBetter ? 'rgba(220, 53, 69, 0.1)' : 'var(--secondary)'};
+                            color: ${profileABetter ? 'white' : profileBBetter ? 'var(--danger)' : 'var(--text-primary)'};
+                            font-weight: bold;
+                            border: 2px solid ${profileABetter ? 'var(--success)' : 'transparent'};
+                        ">
+                            <div style="font-size: 0.9rem; margin-bottom: 5px;">A: ${mainProfileName}</div>
+                            <div style="font-size: 1.3rem;">${resultA.totalCost.toFixed(2)} zł</div>
+                            ${profileABetter ? '<div style="font-size: 0.8rem; margin-top: 5px;">🏆 LEPSZY</div>' : ''}
+                        </div>
+                        
+                        <div style="
+                            font-size: 2rem; 
+                            font-weight: 900; 
+                            color: var(--primary);
+                            text-align: center;
+                        ">VS</div>
+                        
+                        <div style="
+                            text-align: center; 
+                            padding: 12px; 
+                            border-radius: 8px; 
+                            background: ${profileBBetter ? 'var(--success)' : profileABetter ? 'rgba(220, 53, 69, 0.1)' : 'var(--secondary)'};
+                            color: ${profileBBetter ? 'white' : profileABetter ? 'var(--danger)' : 'var(--text-primary)'};
+                            font-weight: bold;
+                            border: 2px solid ${profileBBetter ? 'var(--success)' : 'transparent'};
+                        ">
+                            <div style="font-size: 0.9rem; margin-bottom: 5px;">B: ${comparisonProfileName}</div>
+                            <div style="font-size: 1.3rem;">${resultB.totalCost.toFixed(2)} zł</div>
+                            ${profileBBetter ? '<div style="font-size: 0.8rem; margin-top: 5px;">🏆 LEPSZY</div>' : ''}
+                        </div>
+                    </div>
+                    
+                    <div style="
+                        text-align: center; 
+                        margin-top: 15px; 
+                        padding: 10px; 
+                        background: ${isEqual ? 'var(--info)' : profileABetter || profileBBetter ? 'var(--success)' : 'var(--secondary)'};
+                        color: white;
+                        border-radius: 6px;
+                        font-weight: bold;
+                    ">
+                        ${isEqual ? '🤝 Równe koszty' : 
+                          `💰 Oszczędność: ${savingsAmount.toFixed(2)} zł (Profil ${betterProfile.toUpperCase()} lepszy)`}
+                    </div>
+                `;
+                
+                console.log(`✅ Dodaję kartę do kontenera dla ${resultA.id}`);
                 container.appendChild(card);
             });
+            
+            console.log('🏁 Zakończono tworzenie kart porównania, liczba dzieci kontenera:', container.children.length);
         }
         
         function updateDailyCostSummary(results) {
@@ -2368,13 +2953,21 @@
         
         function createCharts() {
             try {
+                console.log('🎯 Inicjalizacja wykresów...');
                 const ctx1 = document.getElementById('hourlyRatesChart');
                 const ctx2 = document.getElementById('costProfileChart');
                 
                 if (!ctx1 || !ctx2) {
-                    console.error('Nie znaleziono elementów canvas dla wykresów');
+                    console.error('❌ Nie znaleziono elementów canvas dla wykresów');
+                    console.log('Sprawdzanie DOM:', {
+                        hourlyRatesChart: !!ctx1,
+                        costProfileChart: !!ctx2,
+                        chartjsLoaded: typeof Chart !== 'undefined'
+                    });
                     return;
                 }
+                
+                console.log('✅ Elementy canvas znalezione, Chart.js loaded:', typeof Chart !== 'undefined');
                 
                 // Niszczenie starych wykresów
                 if (hourlyChart) {
@@ -2581,23 +3174,14 @@
         }
         
         function setUsageProfile(profileName, element) {
-            if (!usageProfiles[profileName]) {
-                console.error('Nieznany profil:', profileName);
-                return;
+            // Kompatybilność z starymi przyciskami - przekieruj do nowego systemu
+            setMainProfile(profileName);
+            
+            // Zaktualizuj select
+            const mainSelect = document.getElementById('main-profile-select');
+            if (mainSelect) {
+                mainSelect.value = profileName;
             }
-            
-            // Aktualizuj aktywny przycisk
-            document.querySelectorAll('.profile-btn').forEach(btn => btn.classList.remove('active'));
-            if (element) element.classList.add('active');
-            
-            // Ustaw profil
-            currentProfile = [...usageProfiles[profileName]];
-            
-            // Apply seasonal adjustments
-            applySeasonalAdjustments();
-            
-            // Przelicz i aktualizuj
-            calculateCostsAndUpdate();
         }
         
         function setupEventListeners() {
@@ -2672,7 +3256,7 @@
                     const autoFetch = document.getElementById('auto-fetch');
                     if (autoFetch && autoFetch.checked) {
                         console.log('🔄 Auto-fetch: zmiana typu analizy');
-                        setTimeout(fetchSpotPrices, 500);
+                        setTimeout(handleFetchSpotPrices, 500);
                     }
                 });
             }
@@ -2684,7 +3268,7 @@
                     const autoFetch = document.getElementById('auto-fetch');
                     if (autoFetch && autoFetch.checked) {
                         console.log('🔄 Auto-fetch: zmiana daty pojedynczej');
-                        setTimeout(fetchSpotPrices, 500);
+                        setTimeout(handleFetchSpotPrices, 500);
                     }
                 });
             }
@@ -2696,7 +3280,7 @@
                     const dateTo = document.getElementById('date-to');
                     if (autoFetch && autoFetch.checked && dateTo && dateTo.value) {
                         console.log('🔄 Auto-fetch: zmiana daty początkowej');
-                        setTimeout(fetchSpotPrices, 500);
+                        setTimeout(handleFetchSpotPrices, 500);
                     }
                 });
             }
@@ -2708,7 +3292,7 @@
                     const dateFromEl = document.getElementById('date-from');
                     if (autoFetch && autoFetch.checked && dateFromEl && dateFromEl.value) {
                         console.log('🔄 Auto-fetch: zmiana daty końcowej');
-                        setTimeout(fetchSpotPrices, 500);
+                        setTimeout(handleFetchSpotPrices, 500);
                     }
                 });
             }
@@ -2733,18 +3317,33 @@
             const container = document.getElementById('hour-sliders');
             container.innerHTML = '';
             
-            for (let hour = 0; hour < 24; hour++) {
-                const sliderDiv = document.createElement('div');
-                sliderDiv.className = 'hour-slider';
-                sliderDiv.innerHTML = `
-                    <div class="hour-label" style="text-align: center; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px;">${hour}h</div>
-                    <input type="number" class="hour-input" id="hour-${hour}" 
-                           min="0" max="50" step="0.1" value="${currentProfile[hour].toFixed(1)}"
-                           onchange="updateHourValue(${hour}, this.value)"
-                           style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; text-align: center; font-size: 0.8rem;">
-                `;
-                container.appendChild(sliderDiv);
-            }
+            // Nowy graficzny interfejs profili
+            container.innerHTML = `
+                <div class="profile-visualizer">
+                    <canvas id="profileChart" width="800" height="200" style="max-width: 100%; border-radius: 10px;"></canvas>
+                    <div style="text-align: center; margin-top: 10px; font-size: 0.8rem; color: var(--text-secondary);">
+                        📊 Podgląd profilu zużycia w ciągu doby
+                    </div>
+                </div>
+                <div class="hour-sliders-grid">
+                    ${Array.from({length: 24}, (_, hour) => `
+                        <div class="hour-slider-container">
+                            <div class="hour-label">${hour}h</div>
+                            <input type="range" class="hour-slider" id="slider-${hour}" 
+                                   min="0" max="20" step="0.1" value="${currentProfile[hour].toFixed(1)}"
+                                   oninput="updateHourValueSlider(${hour}, this.value)"
+                                   orient="vertical">
+                            <input type="number" class="hour-input-small" id="hour-${hour}" 
+                                   min="0" max="50" step="0.1" value="${currentProfile[hour].toFixed(1)}"
+                                   onchange="updateHourValue(${hour}, this.value)">
+                            <div class="hour-percentage" id="percentage-${hour}">${currentProfile[hour].toFixed(1)}%</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Inicjalizuj wykres profilu
+            setTimeout(() => initializeProfileChart(), 100);
         }
         
         function selectDay(day) {
@@ -2773,14 +3372,137 @@
             
             for (let hour = 0; hour < 24; hour++) {
                 const input = document.getElementById(`hour-${hour}`);
-                if (input) {
-                    input.value = profileToLoad[hour].toFixed(1);
+                const slider = document.getElementById(`slider-${hour}`);
+                const percentageLabel = document.getElementById(`percentage-${hour}`);
+                
+                if (input) input.value = profileToLoad[hour].toFixed(1);
+                if (slider) slider.value = profileToLoad[hour].toFixed(1);
+                if (percentageLabel) percentageLabel.textContent = profileToLoad[hour].toFixed(1) + '%';
+            }
+            
+            // Odśwież wykres profilu
+            updateProfileChart();
+        }
+        
+        // Funkcja obsługująca przesuwniki
+        function updateHourValueSlider(hour, value) {
+            const numValue = parseFloat(value) || 0;
+            
+            // Aktualizuj input number i label
+            const numberInput = document.getElementById(`hour-${hour}`);
+            const percentageLabel = document.getElementById(`percentage-${hour}`);
+            
+            if (numberInput) numberInput.value = numValue.toFixed(1);
+            if (percentageLabel) percentageLabel.textContent = numValue.toFixed(1) + '%';
+            
+            // Aktualizuj profil
+            if (selectedDay === 'all') {
+                currentProfile[hour] = numValue;
+                Object.keys(weeklyProfiles).forEach(day => {
+                    weeklyProfiles[day][hour] = numValue;
+                });
+            } else {
+                weeklyProfiles[selectedDay][hour] = numValue;
+                useWeeklyProfiles = true;
+            }
+            
+            // Odśwież wykres profilu
+            updateProfileChart();
+            
+            // Przelicz koszty
+            calculateCostsAndUpdate();
+        }
+        
+        // Funkcja inicjalizująca wykres profilu
+        let profileChart = null;
+        
+        function initializeProfileChart() {
+            const canvas = document.getElementById('profileChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Wyczyść canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            updateProfileChart();
+        }
+        
+        function updateProfileChart() {
+            const canvas = document.getElementById('profileChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Wyczyść canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            const profileToShow = selectedDay === 'all' ? currentProfile : weeklyProfiles[selectedDay];
+            const maxValue = Math.max(...profileToShow, 10);
+            
+            // Kolory gradientu
+            const gradient = ctx.createLinearGradient(0, height, 0, 0);
+            gradient.addColorStop(0, '#27ae60');
+            gradient.addColorStop(0.5, '#f39c12');
+            gradient.addColorStop(1, '#e74c3c');
+            
+            // Rysuj słupki
+            const barWidth = width / 24;
+            
+            profileToShow.forEach((value, hour) => {
+                const barHeight = (value / maxValue) * (height - 40);
+                const x = hour * barWidth;
+                const y = height - barHeight - 20;
+                
+                // Słupek
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x + 2, y, barWidth - 4, barHeight);
+                
+                // Etykieta godziny
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+                ctx.font = '10px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(hour + 'h', x + barWidth/2, height - 5);
+                
+                // Wartość
+                if (value > 0.5) {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = 'bold 9px -apple-system, BlinkMacSystemFont, sans-serif';
+                    ctx.fillText(value.toFixed(1), x + barWidth/2, y + 12);
                 }
+            });
+            
+            // Siatka pomocnicza
+            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--border-color');
+            ctx.lineWidth = 1;
+            ctx.setLineDash([2, 2]);
+            
+            for (let i = 1; i <= 4; i++) {
+                const y = height - 20 - (i * (height - 40) / 4);
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+                
+                // Etykieta wartości
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-secondary');
+                ctx.font = '9px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText((maxValue * i / 4).toFixed(1) + '%', 5, y - 3);
             }
         }
         
         function updateHourValue(hour, value) {
             const numValue = parseFloat(value) || 0;
+            
+            // Aktualizuj slider i label
+            const slider = document.getElementById(`slider-${hour}`);
+            const percentageLabel = document.getElementById(`percentage-${hour}`);
+            
+            if (slider) slider.value = numValue;
+            if (percentageLabel) percentageLabel.textContent = numValue.toFixed(1) + '%';
             
             if (selectedDay === 'all') {
                 currentProfile[hour] = numValue;
@@ -2792,6 +3514,9 @@
                 weeklyProfiles[selectedDay][hour] = numValue;
                 useWeeklyProfiles = true;
             }
+            
+            // Odśwież wykres profilu
+            updateProfileChart();
             
             // Przelicz koszty
             calculateCostsAndUpdate();
@@ -2850,17 +3575,93 @@
         }
         
         function saveCustomProfile() {
-            const profileData = selectedDay === 'all' ? currentProfile : weeklyProfiles[selectedDay];
-            const profileName = prompt('Nazwa profilu:', `Mój profil ${selectedDay}`);
+            const profileData = selectedDay === 'all' ? 
+                { type: 'single', data: [...currentProfile] } : 
+                { type: 'weekly', data: JSON.parse(JSON.stringify(weeklyProfiles)) };
+                
+            const profileName = prompt('Nazwa profilu:', `Mój profil ${selectedDay === 'all' ? 'standardowy' : 'tygodniowy'}`);
             
             if (profileName) {
                 // Zapisz w localStorage
                 const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
-                savedProfiles[profileName] = [...profileData];
+                savedProfiles[profileName] = {
+                    ...profileData,
+                    created: new Date().toISOString(),
+                    description: selectedDay === 'all' ? 'Profil jednodniowy' : 'Profil tygodniowy z różnymi dniami'
+                };
                 localStorage.setItem('customProfiles', JSON.stringify(savedProfiles));
                 
-                alert(`Profil "${profileName}" został zapisany!`);
+                updateProfilesList();
+                alert(`✅ Profil "${profileName}" został zapisany!`);
             }
+        }
+        
+        function loadCustomProfile(profileName) {
+            const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+            const profile = savedProfiles[profileName];
+            
+            if (!profile) {
+                alert('❌ Nie znaleziono profilu');
+                return;
+            }
+            
+            if (profile.type === 'single') {
+                currentProfile = [...profile.data];
+                selectedDay = 'all';
+                useWeeklyProfiles = false;
+                // Aktualizuj wszystkie dni tygodnia
+                Object.keys(weeklyProfiles).forEach(day => {
+                    weeklyProfiles[day] = [...profile.data];
+                });
+            } else if (profile.type === 'weekly') {
+                weeklyProfiles = JSON.parse(JSON.stringify(profile.data));
+                useWeeklyProfiles = true;
+            }
+            
+            // Odśwież interfejs
+            selectDay(selectedDay);
+            calculateCostsAndUpdate();
+            alert(`✅ Załadowano profil "${profileName}"`);
+        }
+        
+        function deleteCustomProfile(profileName) {
+            if (confirm(`Czy na pewno chcesz usunąć profil "${profileName}"?`)) {
+                const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+                delete savedProfiles[profileName];
+                localStorage.setItem('customProfiles', JSON.stringify(savedProfiles));
+                updateProfilesList();
+                alert(`✅ Profil "${profileName}" został usunięty`);
+            }
+        }
+        
+        function updateProfilesList() {
+            const container = document.getElementById('saved-profiles-list');
+            if (!container) return;
+            
+            const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+            const profileNames = Object.keys(savedProfiles);
+            
+            if (profileNames.length === 0) {
+                container.innerHTML = '<div style="color: var(--text-secondary); font-style: italic; text-align: center; padding: 20px;">Brak zapisanych profili</div>';
+                return;
+            }
+            
+            container.innerHTML = profileNames.map(name => {
+                const profile = savedProfiles[name];
+                const date = new Date(profile.created).toLocaleDateString('pl-PL');
+                return `
+                    <div class="saved-profile-item">
+                        <div class="profile-info">
+                            <div class="profile-name">${name}</div>
+                            <div class="profile-meta">${profile.description} • ${date}</div>
+                        </div>
+                        <div class="profile-actions">
+                            <button onclick="loadCustomProfile('${name}')" class="glass-button secondary">📂 Załaduj</button>
+                            <button onclick="deleteCustomProfile('${name}')" class="glass-button secondary">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
         
         function getAverageWeeklyProfile() {
@@ -2889,6 +3690,457 @@
                 return new Array(24).fill(100/24);
             }
         }
+        
+        // Funkcja toggle dla zarządzania profilami
+        function toggleProfilesManager() {
+            const manager = document.getElementById('profiles-manager');
+            const comparison = document.getElementById('profile-comparison');
+            
+            if (manager.style.display === 'none') {
+                manager.style.display = 'block';
+                comparison.style.display = 'none';
+                updateProfilesList();
+            } else {
+                manager.style.display = 'none';
+            }
+        }
+        
+        // Funkcja toggle dla porównania profili
+        function toggleProfileComparison() {
+            const comparison = document.getElementById('profile-comparison');
+            const manager = document.getElementById('profiles-manager');
+            
+            if (comparison.style.display === 'none') {
+                comparison.style.display = 'block';
+                manager.style.display = 'none';
+                updateComparisonProfiles();
+            } else {
+                comparison.style.display = 'none';
+            }
+        }
+        
+        // Aktualizuj listę profili do porównania
+        function updateComparisonProfiles() {
+            const profileBSelect = document.getElementById('profile-b-select');
+            const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+            
+            console.log('🔍 updateComparisonProfiles:', {
+                profileSelectFound: !!profileBSelect,
+                savedProfilesCount: Object.keys(savedProfiles).length,
+                savedProfiles
+            });
+            
+            if (!profileBSelect) {
+                console.error('❌ Nie znaleziono profile-b-select');
+                return;
+            }
+            
+            // Wyczyść opcje
+            profileBSelect.innerHTML = '<option value="">Wybierz profil...</option>';
+            
+            // Dodaj predefiniowane profile
+            Object.keys(usageProfiles).forEach(key => {
+                const option = document.createElement('option');
+                option.value = `preset_${key}`;
+                option.textContent = `Wzorzec: ${key.charAt(0).toUpperCase() + key.slice(1)}`;
+                profileBSelect.appendChild(option);
+            });
+            
+            // Dodaj zapisane profile
+            Object.keys(savedProfiles).forEach(name => {
+                const option = document.createElement('option');
+                option.value = `saved_${name}`;
+                option.textContent = `Zapisany: ${name}`;
+                profileBSelect.appendChild(option);
+            });
+        }
+        
+        // Funkcja porównania profili
+        function compareProfiles() {
+            const profileASelect = document.getElementById('profile-a-select').value;
+            const profileBSelect = document.getElementById('profile-b-select').value;
+            const resultsDiv = document.getElementById('comparison-results');
+            
+            if (!profileBSelect) {
+                alert('Wybierz profil do porównania');
+                return;
+            }
+            
+            // Pobierz profile
+            let profileA = selectedDay === 'all' ? currentProfile : getAverageWeeklyProfile();
+            let profileB;
+            
+            if (profileBSelect.startsWith('preset_')) {
+                const presetName = profileBSelect.replace('preset_', '');
+                profileB = [...usageProfiles[presetName]];
+            } else if (profileBSelect.startsWith('saved_')) {
+                const savedName = profileBSelect.replace('saved_', '');
+                const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+                const savedProfile = savedProfiles[savedName];
+                
+                if (!savedProfile) {
+                    alert('Nie znaleziono zapisanego profilu');
+                    return;
+                }
+                
+                profileB = savedProfile.type === 'single' ? 
+                    [...savedProfile.data] : 
+                    calculateAverageProfile(savedProfile.data);
+            }
+            
+            // Oblicz koszty dla obu profili
+            const monthlyUsage = parseFloat(document.getElementById('monthly-usage').value) || 300;
+            const annualUsage = parseFloat(document.getElementById('annual-usage').value) || 3600;
+            const installationTypeElement = document.getElementById('installation-type');
+            const installationType = installationTypeElement ? installationTypeElement.value : '3-phase';
+            
+            const resultsA = calculateAllTariffCosts(profileA, monthlyUsage, annualUsage, installationType);
+            const resultsB = calculateAllTariffCosts(profileB, monthlyUsage, annualUsage, installationType);
+            
+            // Znajdź najlepsze opcje
+            const bestA = resultsA.reduce((min, current) => current.totalCost < min.totalCost ? current : min);
+            const bestB = resultsB.reduce((min, current) => current.totalCost < min.totalCost ? current : min);
+            
+            // Wyświetl wyniki
+            displayComparisonResults(resultsA, resultsB, bestA, bestB, profileASelect, profileBSelect);
+        }
+        
+        // Pomocnicza funkcja obliczania średniego profilu z profili tygodniowych
+        function calculateAverageProfile(weeklyProfiles) {
+            const avgProfile = new Array(24).fill(0);
+            const days = Object.keys(weeklyProfiles);
+            
+            for (let hour = 0; hour < 24; hour++) {
+                let total = 0;
+                days.forEach(day => {
+                    total += weeklyProfiles[day][hour] || 0;
+                });
+                avgProfile[hour] = total / days.length;
+            }
+            
+            return avgProfile;
+        }
+        
+        // Funkcja obliczania kosztów dla wszystkich taryf
+        function calculateAllTariffCosts(profile, monthlyUsage, annualUsage, installationType) {
+            console.log('🔍 calculateAllTariffCosts called:', {
+                profileLength: profile?.length,
+                monthlyUsage,
+                annualUsage,
+                installationType,
+                spotPricesCount: spotPrices?.length || 0,
+                tariffsCount: Object.keys(tariffs).length
+            });
+            
+            const tempCurrentProfile = [...currentProfile];
+            const tempUseWeeklyProfiles = useWeeklyProfiles;
+            
+            // Tymczasowo ustaw profil
+            currentProfile = [...profile];
+            useWeeklyProfiles = false;
+            
+            const results = [];
+            Object.keys(tariffs).forEach(tariffId => {
+                const result = calculateTariffCost(tariffId, monthlyUsage, annualUsage, installationType);
+                if (result) {
+                    // Konwertuj strukturę na format kompatybilny z głównymi wynikami
+                    const tariffName = tariffs[tariffId].name || tariffId;
+                    results.push({
+                        id: tariffId,
+                        name: tariffName,
+                        totalCost: result.total,
+                        variableCost: result.variable,
+                        fixedCost: result.fixed,
+                        dailyCost: result.total / 30
+                    });
+                }
+            });
+            
+            // Przywróć oryginalny profil
+            currentProfile = [...tempCurrentProfile];
+            useWeeklyProfiles = tempUseWeeklyProfiles;
+            
+            return results.sort((a, b) => a.totalCost - b.totalCost);
+        }
+        
+        // Wyświetl wyniki porównania
+        function displayComparisonResults(resultsA, resultsB, bestA, bestB, profileAName, profileBName) {
+            const resultsDiv = document.getElementById('comparison-results');
+            
+            const savings = bestA.totalCost - bestB.totalCost;
+            const savingsPercent = ((savings / bestA.totalCost) * 100);
+            
+            let summaryText = '';
+            if (savings > 0) {
+                summaryText = `<div class="savings-positive">✅ Profil B jest tańszy o ${Math.abs(savings).toFixed(2)} zł miesięcznie (${Math.abs(savingsPercent).toFixed(1)}%)</div>`;
+            } else if (savings < 0) {
+                summaryText = `<div class="savings-negative">❌ Profil A jest tańszy o ${Math.abs(savings).toFixed(2)} zł miesięcznie (${Math.abs(savingsPercent).toFixed(1)}%)</div>`;
+            } else {
+                summaryText = `<div>⚖️ Oba profile mają podobne koszty</div>`;
+            }
+            
+            resultsDiv.innerHTML = `
+                <h5>📊 Najlepsze taryfy dla każdego profilu:</h5>
+                ${summaryText}
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Taryfa</th>
+                            <th>Profil A (obecny)</th>
+                            <th>Profil B</th>
+                            <th>Różnica</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${resultsA.slice(0, 5).map((resultA, index) => {
+                            const resultB = resultsB.find(r => r.id === resultA.id);
+                            if (!resultB) return '';
+                            
+                            const diff = resultA.totalCost - resultB.totalCost;
+                            const diffClass = diff > 0 ? 'savings-negative' : diff < 0 ? 'savings-positive' : '';
+                            
+                            return `
+                                <tr>
+                                    <td><strong>${resultA.id}</strong></td>
+                                    <td>${resultA.totalCost.toFixed(2)} zł</td>
+                                    <td>${resultB.totalCost.toFixed(2)} zł</td>
+                                    <td class="${diffClass}">${diff > 0 ? '+' : ''}${diff.toFixed(2)} zł</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        // Funkcje obsługi dwóch profili
+        function getProfileDisplayName(profile) {
+            // Znajdź nazwę profilu na podstawie jego danych
+            for (const [name, data] of Object.entries(usageProfiles)) {
+                if (JSON.stringify(data) === JSON.stringify(profile)) {
+                    return `Wzorzec: ${name}`;
+                }
+            }
+            
+            // Sprawdź zapisane profile
+            const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+            for (const [name, data] of Object.entries(savedProfiles)) {
+                if (JSON.stringify(data) === JSON.stringify(profile)) {
+                    return `Zapisany: ${name}`;
+                }
+            }
+            
+            return 'Profil niestandardowy';
+        }
+        
+        function setMainProfile(profileName) {
+            if (usageProfiles[profileName]) {
+                currentProfile = [...usageProfiles[profileName]];
+                
+                // Apply seasonal adjustments
+                applySeasonalAdjustments();
+                
+                // Zaktualizuj wykresy
+                createCharts();
+                
+                // Przelicz i aktualizuj
+                calculateCostsAndUpdate();
+            }
+        }
+        
+        function setComparisonProfile(profileName) {
+            console.log('🔍 setComparisonProfile:', profileName);
+            
+            if (profileName === '') {
+                comparisonProfile = null;
+                document.getElementById('enable-comparison').checked = false;
+                isDualProfileMode = false;
+                console.log('📴 Wyczyszczono profil porównania');
+            } else {
+                // Parsuj wartość z dropdown
+                if (profileName.startsWith('preset_')) {
+                    const actualProfileName = profileName.replace('preset_', '');
+                    if (usageProfiles[actualProfileName]) {
+                        comparisonProfile = [...usageProfiles[actualProfileName]];
+                        document.getElementById('enable-comparison').checked = true;
+                        isDualProfileMode = true;
+                        console.log('✅ Ustawiono profil porównania (preset):', actualProfileName);
+                    }
+                } else if (profileName.startsWith('saved_')) {
+                    const actualProfileName = profileName.replace('saved_', '');
+                    const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+                    if (savedProfiles[actualProfileName]) {
+                        comparisonProfile = [...savedProfiles[actualProfileName]];
+                        document.getElementById('enable-comparison').checked = true;
+                        isDualProfileMode = true;
+                        console.log('✅ Ustawiono profil porównania (saved):', actualProfileName);
+                    }
+                } else if (usageProfiles[profileName]) {
+                    // Dla kompatybilności wstecznej
+                    comparisonProfile = [...usageProfiles[profileName]];
+                    document.getElementById('enable-comparison').checked = true;
+                    isDualProfileMode = true;
+                    console.log('✅ Ustawiono profil porównania (legacy):', profileName);
+                }
+            }
+            
+            // Zaktualizuj wykresy
+            createCharts();
+            
+            // Przelicz i aktualizuj
+            calculateCostsAndUpdate();
+        }
+        
+        function toggleDualProfileMode() {
+            const checkbox = document.getElementById('enable-comparison');
+            const comparisonSelect = document.getElementById('profile-b-select');
+            
+            console.log('🔄 toggleDualProfileMode:', {
+                checked: checkbox.checked,
+                comparisonSelectValue: comparisonSelect?.value,
+                comparisonSelectFound: !!comparisonSelect
+            });
+            
+            isDualProfileMode = checkbox.checked;
+            
+            if (!isDualProfileMode) {
+                comparisonProfile = null;
+                if (comparisonSelect) comparisonSelect.value = '';
+                console.log('📴 Wyłączono porównanie');
+            } else if (comparisonSelect && comparisonSelect.value) {
+                // Parsuj wartość z dropdown
+                const selectedValue = comparisonSelect.value;
+                if (selectedValue.startsWith('preset_')) {
+                    const profileName = selectedValue.replace('preset_', '');
+                    if (usageProfiles[profileName]) {
+                        comparisonProfile = [...usageProfiles[profileName]];
+                        console.log('✅ Ustawiono profil porównania (preset):', profileName);
+                    }
+                } else if (selectedValue.startsWith('saved_')) {
+                    const profileName = selectedValue.replace('saved_', '');
+                    const savedProfiles = JSON.parse(localStorage.getItem('customProfiles') || '{}');
+                    if (savedProfiles[profileName]) {
+                        comparisonProfile = [...savedProfiles[profileName]];
+                        console.log('✅ Ustawiono profil porównania (saved):', profileName);
+                    }
+                }
+            } else {
+                console.log('⚠️ Brak wybranego profilu do porównania');
+            }
+            
+            // Zaktualizuj wykresy
+            createCharts();
+            
+            // Przelicz i aktualizuj
+            calculateCostsAndUpdate();
+        }
+        
+        
+        // Funkcja pobierania kursu EUR/PLN
+        async function fetchEuroRate() {
+            try {
+                console.log('💱 Pobieranie kursu EUR/PLN...');
+                
+                // Użyj NBP API dla kursu EUR/PLN
+                const response = await fetch('https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json');
+                
+                if (!response.ok) {
+                    throw new Error(`NBP API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const rate = data.rates[0].mid;
+                
+                // Aktualizuj pole kursu
+                const eurPlnInput = document.getElementById('eur-pln-rate');
+                if (eurPlnInput) {
+                    eurPlnInput.value = rate.toFixed(4);
+                    console.log(`✅ Pobrano kurs EUR/PLN: ${rate.toFixed(4)}`);
+                    
+                    // Przelicz koszty jeśli są dane spot
+                    if (spotPrices) {
+                        calculateCostsAndUpdate();
+                    }
+                    
+                    alert(`✅ Pobrano aktualny kurs EUR/PLN: ${rate.toFixed(4)}`);
+                } else {
+                    console.error('❌ Nie znaleziono pola eur-pln-rate');
+                }
+                
+            } catch (error) {
+                console.error('❌ Błąd pobierania kursu EUR:', error);
+                alert('❌ Nie udało się pobrać kursu EUR/PLN z NBP. Używam domyślnej wartości.');
+            }
+        }
+        
+        // Dodatkowe funkcje UX
+        function clearSpotData() {
+            if (confirm('Czy na pewno chcesz wyczyścić dane spot?')) {
+                spotPrices = null;
+                spotPricesRange = [];
+                
+                const statusDiv = document.getElementById('api-status');
+                if (statusDiv) {
+                    statusDiv.className = 'api-status glass-card';
+                    statusDiv.innerHTML = `<strong>🔌 API ENTSO-E:</strong> Kliknij "Pobierz ceny spot" aby pobrać rzeczywiste ceny energii<br>
+                        <small>💡 <strong>Ważne:</strong> ENTSO-E ma dane tylko z przeszłości (maksymalnie do wczoraj)</small>`;
+                }
+                
+                calculateCostsAndUpdate();
+                alert('✅ Dane spot zostały wyczyszczone');
+            }
+        }
+        
+        function exportResults() {
+            try {
+                const results = Array.from(document.querySelectorAll('.summary-card')).map(card => {
+                    const value = card.querySelector('.summary-value')?.textContent || '';
+                    const label = card.querySelector('.summary-label')?.textContent || '';
+                    return { taryfa: label, koszt: value };
+                });
+                
+                const monthlyUsage = document.getElementById('monthly-usage')?.value || 0;
+                const exportData = {
+                    data_eksportu: new Date().toLocaleString('pl-PL'),
+                    zuzycie_miesieczne: monthlyUsage + ' kWh',
+                    profil_sezonowy: currentSeason,
+                    ma_dane_spot: !!spotPrices,
+                    wyniki_porownania: results,
+                    profil_zuzycia: currentProfile
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `kalkulator_taryf_${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                alert('✅ Wyniki zostały wyeksportowane do pliku JSON');
+            } catch (error) {
+                console.error('Błąd eksportu:', error);
+                alert('❌ Błąd podczas eksportu danych');
+            }
+        }
+        
+        // Dodaj przycisk eksportu do interfejsu
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const statusDiv = document.getElementById('api-status');
+                if (statusDiv && !document.getElementById('export-btn')) {
+                    const exportBtn = document.createElement('button');
+                    exportBtn.id = 'export-btn';
+                    exportBtn.className = 'glass-button secondary';
+                    exportBtn.innerHTML = '📤 Eksportuj wyniki';
+                    exportBtn.onclick = exportResults;
+                    exportBtn.style.cssText = 'float: right; margin: 10px 0;';
+                    
+                    statusDiv.parentNode.insertBefore(exportBtn, statusDiv.nextSibling);
+                }
+            }, 2000);
+        });
     </script>
 </body>
 </html>
