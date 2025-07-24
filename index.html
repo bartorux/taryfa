@@ -40,18 +40,50 @@
             --bg-primary: #1e1e2e;
             --bg-secondary: #2a2a3e;
             --bg-tertiary: #35354a;
-            --text-primary: #f0f0f0;
-            --text-secondary: #b0b0b0;
+            --card-bg: #2a2a3e;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
             --text-inverse: #1e1e2e;
-            --border-color: #444466;
-            --shadow-color: rgba(0, 0, 0, 0.5);
-            --glass-bg: rgba(30, 30, 46, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --success: #2ecc71;
+            --border: #555577;
+            --border-color: #555577;
+            --shadow-color: rgba(0, 0, 0, 0.7);
+            --glass-bg: rgba(30, 30, 46, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --success: #27ae60;
             --danger: #e74c3c;
             --warning: #f39c12;
             --info: #5dade2;
+            --primary: #3498db;
+            --secondary: #44475a;
             --chart-bg: rgba(30, 30, 46, 0.95);
+        }
+        
+        /* Poprawki dla trybu ciemnego */
+        [data-theme="dark"] .summary-card {
+            background: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border) !important;
+        }
+        
+        [data-theme="dark"] .glass-card {
+            background: var(--glass-bg) !important;
+            color: var(--text-primary) !important;
+        }
+        
+        [data-theme="dark"] .controls-section h3,
+        [data-theme="dark"] .summary-section h3,
+        [data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4 {
+            color: var(--text-primary) !important;
+        }
+        
+        [data-theme="dark"] input, [data-theme="dark"] select, [data-theme="dark"] button {
+            background: var(--bg-tertiary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border) !important;
+        }
+        
+        [data-theme="dark"] label {
+            color: var(--text-primary) !important;
         }
         
         body {
@@ -702,10 +734,11 @@
         .tooltip .tooltiptext {
             visibility: hidden;
             width: 200px;
-            background-color: rgba(0,0,0,0.8);
-            color: #fff;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
             text-align: center;
             border-radius: 6px;
+            border: 1px solid var(--border);
             padding: 5px;
             position: absolute;
             z-index: 1;
@@ -1513,7 +1546,7 @@
             G11: {
                 name: "G11 - Jednostrefowa",
                 rate: 0.3437, // bez tarczy
-                rateShield: 0.412, // z tarczą 
+                rateShield: 0.30, // z tarczą (obniżone)
                 fixedMonthly: { "1-phase": 7.68, "3-phase": 11.54 },
                 type: "flat"
             },
@@ -1528,8 +1561,8 @@
                 rates: { 
                     day: 0.3791, 
                     night: 0.0816,
-                    dayShield: 0.542,
-                    nightShield: 0.224
+                    dayShield: 0.32, // obniżone z tarczą
+                    nightShield: 0.07 // obniżone z tarczą
                 },
                 zones: [
                     // dzień: 6-13, 15-22; noc: 13-15, 22-6
@@ -1546,8 +1579,8 @@
                 rates: { 
                     day: 0.3960, 
                     night: 0.0838,
-                    dayShield: 0.542,
-                    nightShield: 0.224
+                    dayShield: 0.33, // obniżone z tarczą
+                    nightShield: 0.07 // obniżone z tarczą
                 },
                 zones: [
                     'night','night','night','night','night','night',
@@ -1564,8 +1597,8 @@
                 rates: { 
                     peak: 0.3590, 
                     offpeak: 0.0870,
-                    peakShield: 0.542,
-                    offpeakShield: 0.224
+                    peakShield: 0.31, // obniżone z tarczą
+                    offpeakShield: 0.07 // obniżone z tarczą
                 },
                 zones: [
                     // szczyt: 7-13, 16-22; pozaszczyt: 13-16, 22-7
@@ -3948,6 +3981,7 @@
                         'evening': 'Wieczorny',
                         'night': 'Nocny',
                         'flexible': 'Elastyczny G12',
+                        'flexibleW': 'Elastyczny G12w',
                         'homeoffice': 'Home Office',
                         'ev_charging': 'Ładowanie EV',
                         'heat_pump': 'Pompa ciepła'
